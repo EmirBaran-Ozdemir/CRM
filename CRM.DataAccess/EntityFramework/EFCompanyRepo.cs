@@ -13,15 +13,12 @@ namespace CRM.DataAccess.EntityFramework
 		public List<User> GetUsersWithRolesByCompanyId(int id)
 		{
 			var values = context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
-			values = context.Users.Include(x => x.Company).ToList();
 			return values;
-
 		}
-
-		public List<User> GetUsersWithProductsByCompanyId(int id)
+		public List<User> GetCompanyEmployees(int id)
 		{
-			var values = context.Users.Include(x => x.Products).Where(x => x.CompanyId == id).ToList();
-			return values;
+			return context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
 		}
+
 	}
 }

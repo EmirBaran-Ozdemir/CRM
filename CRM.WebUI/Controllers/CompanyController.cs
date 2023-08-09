@@ -1,28 +1,43 @@
 ﻿using CRM.Business.Concrete;
 using CRM.DataAccess.EntityFramework;
+using CRM.DataTypeObjects.Models;
+using CRM.Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.WebUI.Controllers
 {
-	[AllowAnonymous]
 	public class CompanyController : Controller
 	{
-		CompanyManager _companyManager = new CompanyManager(new EFCompanyRepo());
+		readonly CompanyManager _companyManager = new CompanyManager(new EFCompanyRepo());
+		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
+		
 		public IActionResult Index()
 		{
-			var values = _companyManager.GetListAll();
-			return View(values);
+			var model = _companyManager.GetListAll();
+			return View(model);
 		}
-		public IActionResult CompanyProducts(int id)
+
+		public IActionResult Products(int id)
 		{
-			var values = _companyManager.GetUsersWithProductsByCompanyId(id);
-			return View(values);
+			CompanyProductsModel model = new CompanyProductsModel();
+			model.Company = _companyManager.GetById(id);
+			List<User> users = _companyManager.GetCompanyEmployees(id);
+			foreach(User user in users)
+			{
+				List<Product> userProducts = _productManager.GetAllProductsWithTypesBySellerId(user.Id); 
+				model.Products?.AddRange(userProducts);
+			}
+			return View("CompanyProducts", model);
 		}
-		public IActionResult CompanyEmployees(int id)
+
+		public IActionResult Employees(int id)
 		{
-			var values = _companyManager.GetUsersWithRolesByCompanyId(id);
-			return View(values);
+			CompanyEmployeesModel model = new CompanyEmployeesModel();
+			model.Company = _companyManager.GetById(id);
+			model.Users = _companyManager.GetUsersWithRolesByCompanyId(id);
+			
+			return View("CompanyEmployees", model);
 		}
 	}
 }

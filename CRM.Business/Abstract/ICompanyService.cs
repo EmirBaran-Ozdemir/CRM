@@ -4,7 +4,7 @@ namespace CRM.Business.Abstract
 {
 	internal interface ICompanyService : IGenericService<Company>
 	{
-		List<User> GetUsersWithProductsByCompanyId(int id);
+		public List<User> GetCompanyEmployees(int id);
 		List<User> GetUsersWithRolesByCompanyId(int id);
 	}
 }

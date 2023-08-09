@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+	var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+	var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+	Dictionary<string, List<string>> menuItems = new Dictionary<string, List<string>>();
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -21,32 +28,28 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
-						<li class="top-left-menu">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Profile">Profile</a>
-						</li>
-
 						@if (User.Identity!.IsAuthenticated)
 						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AddProduct">Add Product</a>
-							</li>
-							<li class="nav-item stick-to-right">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
-							</li>
+							menuItems.Add("Company", new List<string> { "Index" });
+							menuItems.Add("Product", new List<string> { "Index" });
+							menuItems.Add("Auth", new List<string> { "Logout" });
 						}
 						else
 						{
-							@if ((string)ViewData["Title"]! == "Register")
+							menuItems.Add("Company", new List<string> { "Index" });
+							menuItems.Add("Product", new List<string> { "Index" });
+							menuItems.Add("Auth", new List<string> { "Login", "Register" });
+						}
+						@foreach (var element in menuItems)
+						{
+							@foreach (string value in element.Value)
 							{
-								<li class="nav-item">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
-								</li>
-							}
-							else
-							{
-								<li class="nav-item auth-items">
-									<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
-								</li>
+								if (element.Key != currentController || value != currentAction)
+								{
+									<li class="nav-item">
+										<a class="nav-link text-dark" asp-area="" asp-controller="@element.Key" asp-action="@value">@(value == "Index" ? element.Key : value)</a>
+									</li>
+								}
 							}
 						}
 					</ul>
@@ -60,7 +63,7 @@
 	</main>
 
 	<footer class="border-top footer text-muted">
-			&copy; 2023 - CRM
+		&copy; 2023 - CRM
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

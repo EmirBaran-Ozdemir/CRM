@@ -9,16 +9,20 @@ namespace CRM.DataAccess.EntityFramework
 	public class EFProductRepo : GenericRepo<Product>, IProductDal
 	{
 		CRMContext context = new CRMContext();
-		public List<Product> GetProductsByProductTypeId(int id)
+		public List<Product> GetAllProductsWithTypesByTypeId(int id)
 		{
 			return context.Products.Include(x => x.ProductType).Where(x => x.ProductTypeId == id).ToList();
 		}
-		public Product GetProductWithSellerAndCompanyAndProductTypeById(int id)
+		public Product GetProductWithSellerInfoAndProductTypeById(int id)
 		{
 			return context.Products.Include(x => x.Seller)
 				.Include(x => x.Seller!.Company)
 				.Include(x => x.ProductType)
 				.FirstOrDefault(x => x.Id == id)!;
+		}
+		public List<Product> GetAllProductsWithTypesBySellerId(int id)
+		{
+			return context.Products.Include(x => x.ProductType).Where(x => x.SellerId == id).ToList();
 		}
 		public bool CheckSameProduct(string name)
 		{

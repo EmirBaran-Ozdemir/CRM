@@ -16,6 +16,10 @@ namespace CRM.Business.Concrete
 		{
 			return _productDal.GetListAll(filter);
 		}
+		public List<Product> GetAllProductsWithTypesBySellerId(int id)
+		{
+			return _productDal.GetAllProductsWithTypesBySellerId(id);
+		}
 		public bool CheckSameLicense(string license)
 		{
 			return _productDal.CheckSameLicense(license);
@@ -24,9 +28,9 @@ namespace CRM.Business.Concrete
 		{
 			return _productDal.CheckSameProduct(name);
 		}
-		public Product GetProductWithSellerAndCompanyAndProductTypeById(int id)
+		public Product GetProductWithSellerInfoAndProductTypeById(int id)
 		{
-			return _productDal.GetProductWithSellerAndCompanyAndProductTypeById(id);
+			return _productDal.GetProductWithSellerInfoAndProductTypeById(id);
 		}
 	}
 }

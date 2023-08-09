@@ -4,9 +4,10 @@ namespace CRM.DataAccess.Abstract
 {
 	public interface IProductDal : IGenericDal<Product>
 	{
-		List<Product> GetProductsByProductTypeId(int id);
-		Product GetProductWithSellerAndCompanyAndProductTypeById(int id);
+		List<Product> GetAllProductsWithTypesByTypeId(int id);
+		Product GetProductWithSellerInfoAndProductTypeById(int id);
 
+		List<Product> GetAllProductsWithTypesBySellerId(int id);
 		bool CheckSameProduct(string name);
 		bool CheckSameLicense(string license);
 

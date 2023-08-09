@@ -3,16 +3,17 @@
 @{
 	Layout = "_Layout";
 }
+<link rel="stylesheet" href="~/css/style-table.css">
 <link rel="stylesheet" href="~/css/style-main.css /">
 <link rel="stylesheet" href="~/css/utils.css/">
 <div class="d-flex">
 	<div class="container">
 		<div class="bg-white" id="sidebar-wrapper">
 			<div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+				<a asp-controller="Home" asp-action="Profile"><img src="~/images/CRM_Logo_White.jpg" alt="logo" class="logo" width="100" height="100" /></a>
 
-				<a asp-controller="Home" asp-action="Profile"><img src="~/images/user.png" alt="logo" class="logo" width="100" height="100" /></a>
 			</div>
-			<div class="list-group  my-3">
+			<div class="list-group" style="text-align:center">
 
 				<p>Name: @Model.Name</p>
 				<p>Email: @Model.Email</p>
@@ -25,29 +26,32 @@
 				}
 				else
 				{
-					<table border="1"  style="display:flex; justify-items:center">
-						<caption>-- @Model?.Name's products --</caption>
-						<tr>
-							<th> Name </th>
-							<th> Price</th>
-							<th> Type </th>
-						</tr>
-						@foreach (var product in Model?.Products!)
-						{
+					<div style="display:flex; justify-content:center;">
+						<table>
+							<thead>
+								<tr>
+									<th> Name </th>
+									<th> Price</th>
+									<th> Type </th>
+								</tr>
+							</thead>
+							@foreach (var product in Model?.Products!)
+							{
+								<tr>
+
+									<td>@product.Name</td>
+									<td>@product.Price</td>
+									<td>@product.ProductTypeId</td>
+								</tr>
+							}
 							<tr>
-
-								<td>@product.Name</td>
-								<td>@product.Price</td>
-								<td>@product.ProductTypeId</td>
+								<td>test</td>
+								<td>teste</td>
+								<td>testuctTypeId</td>
 							</tr>
-						}
-						<tr>
-							<td>test</td>
-							<td>teste</td>
-							<td>testuctTypeId</td>
-						</tr>
 
-					</table>
+						</table>
+					</div>
 				}
 
 				<a href="#" class="btn_primary">Edit</a>

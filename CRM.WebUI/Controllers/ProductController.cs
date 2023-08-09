@@ -9,14 +9,13 @@ using CRM.DataTypeObjects.Models;
 
 namespace CRM.WebUI.Controllers
 {
-    [AllowAnonymous]
 	public class ProductController : Controller
 	{
 
 		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
 		readonly UserManager _userManager = new UserManager(new EFUserRepo());
-		readonly CompanyManager _companyManager = new CompanyManager(new EFCompanyRepo());
-		readonly ProductTypeManager _productTypeManager = new ProductTypeManager(new EFProductTypeRepo());
+		
+		[AllowAnonymous]
 		public IActionResult Index()
 		{
 			var values = _productManager.GetListAll();
@@ -58,14 +57,12 @@ namespace CRM.WebUI.Controllers
 			_productManager.Add(model.Product);
 			return RedirectToAction("Index");
 		}
+
+		[AllowAnonymous]
 		public IActionResult Product(int id)
 		{
-			GetProductModel getProductModel = new GetProductModel();
-			getProductModel.Product = _productManager.GetById(id);
-			getProductModel.User = _userManager.GetUserWithCompanyById(getProductModel.Product.SellerId);
-			getProductModel.Company = _companyManager.GetById(getProductModel.User.CompanyId);
-			getProductModel.ProductType = _productManager.GetProductTypeById(getProductModel.Product.ProductTypeId);
-			return View("GetProductById", getProductModel);
+			var model = _productManager.GetProductWithSellerInfoAndProductTypeById(id);
+			return View("GetProductById", model);
 		}
 	}
 }
