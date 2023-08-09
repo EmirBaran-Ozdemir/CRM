@@ -1,0 +1,64 @@
+﻿@model User
+@{
+	ViewData["Title"] = "Login";
+	Layout = "_layout";
+}
+
+<head>
+	<!-- Custom CSS -->
+	
+	<link rel="stylesheet" href="~/css/auth/style-main.css" />
+	<link rel="stylesheet" href="~/css/auth/style-login.css" />
+	
+
+	<script src="~/js/password-handler.js"></script>
+</head>
+
+<!-- login -->
+<section class="loginpage">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 m-auto">
+				<div class="card m-auto">
+					<div class="card-body">
+						<div class="form login">
+							<span class="title">Login</span>
+							@using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+							{
+								<div class="input-field">
+									@Html.TextBoxFor(x=>x.Email, new { @class = "form-control", @placeholder = "E-Mail", @required = "required" })
+									@Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-error" })
+									<i class="fa-regular fa-envelope icon"></i>
+								</div>
+
+								<div class="input-field">
+									@Html.TextBoxFor(x=>x.Password, new { @class = "form-control", @placeholder = "Password", @id="password", @required = "required"})
+									@Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-error" })
+									<i class="fas fa-lock icon"></i>
+									<i class="fa-regular fa-eye-slash showHidePw"></i>
+								</div>
+
+								<button type="submit" class="btn_primary mt-3 mb-3" id="login">
+									Sign in
+								</button>
+								<div>
+									@if (ViewData["ValidateMessage"] != null)
+									{
+										<p class="text-error">@Html.Raw(ViewData["ValidateMessage"])</p>
+									}
+								</div>
+
+							}
+						</div>
+						<div class="create-acount">
+							Don't have an account?
+							<a asp-area="" asp-controller="Auth" asp-action="Register"> Sign Up </a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+

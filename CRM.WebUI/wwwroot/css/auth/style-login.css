@@ -1,0 +1,101 @@
+﻿﻿.loginpage {
+    height: min-content;
+    margin-top: 70px;
+}
+
+.loginpage .container .card {
+    padding: 20px;
+    width: 400px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.loginpage .btn_primary {
+    width: 100%;
+}
+
+.loginpage .forgot-password,
+.loginpage .create-acount {
+    text-align: center;
+}
+
+    .loginpage .forgot-password a,
+    .loginpage .create-acount a {
+        text-decoration: none;
+        color: var(--primary-dark);
+        font-weight: 600;
+    }
+
+@media screen and (max-width: 450px) {
+    .loginpage .container .card {
+        width: 300px;
+    }
+
+    .loginpage .btn_primary {
+        padding: 8px 15px;
+    }
+}
+
+/*************/
+.loginpage .form .title {
+    position: relative;
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.form .title::before {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background-color: var(--primary-dark);
+    border-radius: 25px;
+}
+
+.form .input-field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.input-field input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0 35px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-bottom: 2px solid #ccc;
+    border-top: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+    .input-field input:is(:focus, :valid) {
+        border-bottom-color: var(--primary-dark);
+    }
+
+.input-field i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-1);
+    font-size: 23px;
+}
+
+.input-field input:is(:focus, :valid) ~ i {
+    color: var(--primary-dark);
+}
+
+.input-field i.icon {
+    left: 0;
+}
+
+.input-field i.showHidePw {
+    right: 0;
+    cursor: pointer;
+    padding: 10px;
+}

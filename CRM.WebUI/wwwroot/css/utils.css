@@ -1,0 +1,91 @@
+﻿/* Color setup*/
+:root {
+    --primary: #007bff; /* Blueish primary color */
+    --primary-dark: #222277; /* Darker shade of blue */
+    --black: #333;
+    --gray-1: #788190;
+    --gray-2: #d3d4db;
+    --white: #ffffff;
+    --body: #fefefe;
+}
+
+/* button */
+.btn_primary {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    outline: none;
+    color: var(--white);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    transition: transform 0.5s ease;
+}
+
+    .btn_primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px var(--primary);
+        color: var(--white);
+    }
+
+    .btn_primary span {
+        position: absolute;
+        background: var(--white);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        border-radius: 50%;
+        animation: animate 1s linear infinite;
+    }
+
+.btn-secondary {
+    position: relative;
+    top: 100px;
+    background: var(--white);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    height: 35px;
+    width: 100%;
+    font-size: 16px;
+    color: var(--primary-dark);
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: transform 0.5s ease;
+}
+
+    .btn-secondary:hover {
+        transform: scale(1.05);
+        background: var(--white);
+        color: var(--primary-dark);
+    }
+
+@keyframes animate {
+    0% {
+        width: 0px;
+        height: 0px;
+        opacity: 0.5;
+    }
+
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}
+
+.toggle_btn {
+    color: var(--black);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+}
+
+    .toggle_btn i {
+        transition: transform 0.3s ease-in-out;
+    }

@@ -1,0 +1,19 @@
+﻿.radio-container {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #4e8cba;
+}
+
+    .radio-container input[type="radio"] {
+        display: none;
+    }
+
+    .radio-container label {
+        
+        width:120px;
+        padding: 5px 15px;
+        border: 2px solid var(--primary);
+        border-radius: 20px;
+        cursor: pointer;
+    }

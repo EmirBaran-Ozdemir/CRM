@@ -1,0 +1,143 @@
+﻿@model RegisterModel
+
+@{
+	ViewData["Title"] = "Register";
+	Layout = "_layout";
+
+}
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Register Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="~/css/style-main.css">
+	<link rel="stylesheet" href="~/css/auth/style-register.css" />
+	<link rel="stylesheet" href="~/css/style-inputs.css" />
+	<link rel="stylesheet" href="~/css/style-radio.css" />
+	<script src="~/js/radio-button.js"></script>
+	<script src="~/js/password-handler.js"></script>
+</head>
+
+
+<section class="register">
+	<div class="container">
+		<div class="row">
+			<div>
+				<div class="card m-auto">
+					<span class="title">Welcome To CRM Application</span>
+					<span class="title">Register</span>
+
+					@using (Html.BeginForm("Register", "Auth", FormMethod.Post))
+					{
+						<br>
+						<div class="row">
+							<div class="input-field col-6">
+								@Html.TextBoxFor(x=>x.User.Name, new { @class = "form-control", @placeholder = "Full Name", @required = "required" })
+								@Html.ValidationMessageFor(x => x.User.Name, "", new { @class = "text-error" })
+								<i class="fa-solid fa-user icon"></i>
+							</div>
+							<div class="input-field col-6">
+								@Html.TextBoxFor(x=>x.User.Email, new { @class = "form-control", @placeholder = "Email", @required = "required" })
+								@Html.ValidationMessageFor(x => x.User.Email, "", new { @class = "text-error" })
+								<i class="fa-solid fa-envelope icon"></i>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="input-field col-6">
+								@Html.TextBoxFor(x=>x.User.Password, new { @class = "form-control", @placeholder = "Password", @onkeyup="confirm_password()",@id="password", @required = "required"})
+								@Html.ValidationMessageFor(x => x.User.Password, "", new { @class = "text-error" })
+								<i class="fa-solid fa-lock icon"></i>
+							</div>
+							<div class="input-field col-6">
+								<input type="password" class="password" placeholder="Confirm Password" id="confirmPassword" onkeyup="confirm_password()" required />
+								<i class="fa-solid fa-lock icon"></i>
+								<i class="fa-solid fa-eye-slash showHidePw"></i>
+								<span id="wrong_pass_alert"></span>
+
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="input-field col-6">
+								@Html.TextBoxFor(x=>x.User.Phone, new { @class = "form-control", @placeholder = "0XXX XXX XXXX", @required = "required" })
+								@Html.ValidationMessageFor(x => x.User.Phone, "", new { @class = "text-error" })
+								<i class="fa-solid fa-phone"></i>
+							</div>
+							<div class="input-field col-6">
+								@Html.TextBoxFor(x=>x.User.Quota, new { @class = "form-control", @placeholder = "Quota", @required = "required" })
+								@Html.ValidationMessageFor(x => x.User.Quota, "", new {  @class = "text-error" })
+								<i class="fa-solid fa-dollar"></i>
+							</div>
+						</div>
+						<div class="input-field">
+							@Html.TextBoxFor(x=>x.User.Address, new { @class = "form-control", @placeholder = "Address", @required = "required" })
+							@Html.ValidationMessageFor(x => x.User.Address, "", new {  @class = "text-error" })
+							<i class="fa-solid fa-home"></i>
+						</div>
+
+						<div class="row mt-4">
+							<div class="col-4">
+								<div>
+									<label class="d-block text-center" style="color:var(--gray-1)">Role</label>
+								</div>
+								<div class="input-field text-center">
+
+									<div class="radio-container">
+										@Html.RadioButtonFor(x => x.User.RoleId, "2", new { @class = "form-control", @id = "radio-buyer", @onclick = "switchRadioColors(document.getElementById('buyer-label'), document.getElementById('seller-label'))", @required = "required" })
+										@Html.ValidationMessageFor(x => x.User.RoleId, "", new { @class = "text-error" })
+										<label id="buyer-label" for="radio-buyer">Buyer</label>
+									</div>
+
+									<div class="radio-container">
+										@Html.RadioButtonFor(x => x.User.RoleId, "3", new { @class = "form-control", @id = "radio-seller", @onclick = "switchRadioColors(document.getElementById('seller-label'), document.getElementById('buyer-label'))"})
+										@Html.ValidationMessageFor(x => x.User.RoleId, "", new { @class = "text-error" })
+										<label id="seller-label" for="radio-seller">Seller</label>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="col-4 input-field">
+								@Html.DropDownListFor(x => x.User.CompanyId, new SelectList(Model.Companies, "Id", "Name"), "Select a Company", new { @id = "companyDropdown", @class = "form-control", @required = "required" })
+								@Html.ValidationMessageFor(x => x.User.CompanyId, "", new {@class = "text-error" })
+							</div>
+
+
+							<div class="col-4">
+								<div>
+									<label class="d-block text-center" style="color:var(--gray-1)">Gender</label>
+								</div>
+								<div class="input-field text-center">
+
+									<div class="radio-container">
+										@Html.RadioButtonFor(x=>x.User.Gender, "1", new{@class = "form-control", @id = "radio-male",@onclick="switchRadioColors(document.getElementById('male-label'), document.getElementById('female-label'))", @required = "required"})
+										@Html.ValidationMessageFor(x=>x.User.Gender, "", new { @class = "text-error" })
+										<label id="male-label" for="radio-male">Male</label>
+									</div>
+									<div class="radio-container">
+										@Html.RadioButtonFor(x=>x.User.Gender, "2", new{@class = "form-control", @id = "radio-female",@onclick="switchRadioColors(document.getElementById('female-label'), document.getElementById('male-label'))"})
+										@Html.ValidationMessageFor(x=>x.User.Gender, "", new { @class = "text-error" })
+										<label id="female-label" for="radio-female">Female</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<br />
+						<button type="submit" class="btn_primary mt-3 mb-3" id="create">Register</button>
+					}
+
+					<div class="sign-in">
+						Already have an account?
+						<a href="/Auth/Login">Log in here</a>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

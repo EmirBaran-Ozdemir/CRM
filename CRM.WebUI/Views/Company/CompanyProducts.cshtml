@@ -1,0 +1,52 @@
+﻿@model List<User>
+
+@{
+	Layout = "_layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CRM Application</title>
+	<link rel="stylesheet" type="text/css" href="/css/list.css">
+</head>
+<body>
+	<table>
+		@if (Model != null && Model.Any())
+		{
+			<thead>
+				<tr>
+					<th>Product ID</th>
+					<th>Product Name</th>
+					<th>Product Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var user in Model)
+				{
+					@if (user.Products != null && user.Products.Any())
+					{
+						@foreach (var product in user.Products)
+						{
+							<tr>
+								<td>@product.Id</td>
+								<td>@product.Name</td>
+								<td>$@product.Price</td>
+							</tr>
+						}
+					}
+				}
+			</tbody>
+		}
+		else
+		{
+			<tbody>
+				<tr>
+					<td colspan="3">No users or products available.</td>
+				</tr>
+			</tbody>
+		}
+	</table>
+</body>
+</html>

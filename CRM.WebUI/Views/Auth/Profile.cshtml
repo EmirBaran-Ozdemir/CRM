@@ -1,0 +1,63 @@
+﻿@model User
+
+@{
+	Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/style-main.css /">
+<link rel="stylesheet" href="~/css/utils.css/">
+<div class="d-flex">
+	<div class="container">
+		<div class="bg-white" id="sidebar-wrapper">
+			<div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+
+				<a asp-controller="Home" asp-action="Profile"><img src="~/images/user.png" alt="logo" class="logo" width="100" height="100" /></a>
+			</div>
+			<div class="list-group  my-3">
+
+				<p>Name: @Model.Name</p>
+				<p>Email: @Model.Email</p>
+				<p>Phone: @Model.Phone</p>
+				<p>Address: @Model.Address</p>
+				<p>Company: @Model?.Company?.Name</p>
+				@if (Model?.Products?.Count == 0)
+				{
+					<h4 style="display:flex; justify-content:center">-- This user didn't add any products yet --</h4>
+				}
+				else
+				{
+					<table border="1"  style="display:flex; justify-items:center">
+						<caption>-- @Model?.Name's products --</caption>
+						<tr>
+							<th> Name </th>
+							<th> Price</th>
+							<th> Type </th>
+						</tr>
+						@foreach (var product in Model?.Products!)
+						{
+							<tr>
+
+								<td>@product.Name</td>
+								<td>@product.Price</td>
+								<td>@product.ProductTypeId</td>
+							</tr>
+						}
+						<tr>
+							<td>test</td>
+							<td>teste</td>
+							<td>testuctTypeId</td>
+						</tr>
+
+					</table>
+				}
+
+				<a href="#" class="btn_primary">Edit</a>
+
+
+
+
+				<a asp-controller="Auth" asp-action="Logout"
+				   class="list-group-item list-group-item-action bg-transparent text-primary fw-bold"><i class="fas fa-power-off me-2"></i>Logout</a>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model List<User>
+
+@{
+	Layout = "_layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CRM Application</title>
+	<link rel="stylesheet" type="text/css" href="/css/list.css">
+	<link rel="stylesheet" href="~/css/style-main.css" />
+
+	<link rel="stylesheet" href="~/css/style-radio.css" />
+
+</head>
+<body>
+	<h1> @Model[0].Company!.Name</h1>
+	<table>
+		@if (Model != null && Model.Any())
+		{
+			<thead>
+				<tr>
+					<th>User Name</th>
+					<th>User </th>
+					<th>User Phone</th>
+					<th>User Role</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var user in Model)
+				{
+					<tr>
+						
+						<td>@user.Name</td>
+						<td>@user.Email</td>
+						<td>@user.Phone</td>
+						<td>@user.Role!.Name</td>
+					</tr>
+				}
+			</tbody>
+		}
+		else
+		{
+			<tbody>
+				<tr>
+					<td colspan="3">This company has no users.</td>
+				</tr>
+			</tbody>
+		}
+	</table>
+</body>
+</html>

@@ -1,0 +1,77 @@
+﻿@model AddProductModel
+
+@{
+	ViewData["Title"] = "Add Product";
+	Layout = "_layout";
+}
+<head>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="~/css/auth/style-main.css" />
+	<link rel="stylesheet" href="~/css/auth/style-addProduct.css" />
+	<link rel="stylesheet" href="~/css/style-inputs.css" />
+	<link rel="stylesheet" href="~/css/style-radio.css" />
+	<script src="~/js/radio-button.js"></script>
+
+</head>
+
+<!-- add product -->
+<section class="addProduct">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 m-auto">
+				<div class="card m-auto">
+					<div class="card-body">
+						<div class="form">
+							<span class="title">Add Product</span>
+							<form asp-controller="Product" asp-action="AddProduct" method="post">
+								<div class="input-field">
+									<input asp-for="Product.Name"
+										   type="text"
+										   placeholder="Product name"
+										   required />
+									<i class="fa-solid fa-cart-shopping"></i>
+								</div>
+
+								<div class="input-field">
+									<textarea asp-for="Product.Details"
+											  placeholder="Product Details"
+											  required></textarea>
+									
+								</div>
+								<br />
+								<div class="input-field">
+									<input asp-for="Product.Price"
+										   type="number"
+										   step="1.00"
+										   min="0.00"
+										   placeholder="Product price"
+										   required />
+									<i class="fa-regular fa-dollar-sign icon"></i>
+								</div>
+								<div class="input-field text-center">
+									<div class="radio-container">
+										<input type="radio" id="radio-lifetime" asp-for="Product.ProductTypeId" value="1" onclick="switchRadioColors(document.getElementById('lifetime-label'), document.getElementById('membership-label'))" required>
+										<label id="lifetime-label" for="radio-lifetime">
+											Lifetime
+											License
+										</label>
+									</div>
+									<div class="radio-container">
+										<input type="radio" id="radio-membership" asp-for="Product.ProductTypeId" value="2" onclick="switchRadioColors(document.getElementById('membership-label'), document.getElementById('lifetime-label'))">
+										<label id="membership-label" for="radio-membership">
+											Membership
+											License
+										</label>
+									</div>
+								</div>
+								<button type="submit" class="btn_primary mt-3 mb-3" id="create">
+									Add Product
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

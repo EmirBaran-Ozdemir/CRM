@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - CRM</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<link rel="stylesheet" href="~/css/style-main.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/utils.css" asp-append-version="true" />
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRM</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="top-left-menu">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Profile">Profile</a>
+						</li>
+
+						@if (User.Identity!.IsAuthenticated)
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="AddProduct">Add Product</a>
+							</li>
+							<li class="nav-item stick-to-right">
+								<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+							</li>
+						}
+						else
+						{
+							@if ((string)ViewData["Title"]! == "Register")
+							{
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
+								</li>
+							}
+							else
+							{
+								<li class="nav-item auth-items">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
+								</li>
+							}
+						}
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<main role="main">
+		@RenderBody()
+	</main>
+
+	<footer class="border-top footer text-muted">
+			&copy; 2023 - CRM
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
