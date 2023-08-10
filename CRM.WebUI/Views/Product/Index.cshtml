@@ -1,4 +1,4 @@
-﻿@model CompanyProductsModel
+﻿@model List<Product>
 
 @{
 	Layout = "_layout";
@@ -14,27 +14,27 @@
 
 </head>
 <body>
-
-	@if (Model.Products!.Count > 0)
+	<h3 style="text-align:center">Products</h3>
+	@if (Model.Count > 0)
 	{
 		<div style="display:flex;justify-content:center">
 			<table>
 				<thead>
 					<tr>
-						<th>Product ID</th>
-						<th>Product Name</th>
-						<th>Product Price</th>
-						<th>Product Type</th>
+						<th class="main-element">Product</th>
+						<th class="centered">Price</th>
+						<th class="centered">Type</th>
+						<th class="centered">Company</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (Product product in Model!.Products!)
+					@foreach (Product product in Model)
 					{
 						<tr>
-							<td>@product.Id</td>
-							<td>@product.Name</td>
-							<td>@product.Price</td>
-							<td>@product.ProductType!.Name</td>
+							<td class="centered">@product.Name</td>
+							<td class="centered">@product.Price</td>
+							<td class="centered">@product.ProductType!.Name</td>
+							<td class="centered"><a href="/Company/@product.Seller!.CompanyId"></a>@product.Seller!.Company!.Name</td>
 						</tr>
 					}
 				</tbody>

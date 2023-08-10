@@ -6,8 +6,8 @@ namespace CRM.DataAccess.Abstract
 	{
 		List<Product> GetAllProductsWithTypesByTypeId(int id);
 		Product GetProductWithSellerInfoAndProductTypeById(int id);
-
 		List<Product> GetAllProductsWithTypesBySellerId(int id);
+		List<Product> GetAllWithCompanyAndProductType();
 		bool CheckSameProduct(string name);
 		bool CheckSameLicense(string license);
 

@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using CRM.DataTypeObjects.Models;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CRM.WebUI.Controllers
 {
-    [AllowAnonymous]
+	[AllowAnonymous]
 	public class AuthController : Controller
 	{
 		readonly UserManager _userManager = new UserManager(new EFUserRepo());
 
 		[HttpGet]
-		[AllowAnonymous]
-		public IActionResult Profile()
+		public IActionResult MyProfile()
 		{
 			string identityId = HttpContext.User.Identity!.Name!;
 
@@ -35,6 +35,20 @@ namespace CRM.WebUI.Controllers
 
 			return RedirectToAction("Login", "Auth");
 		}
+		[HttpGet]
+		[AllowAnonymous]
+		public IActionResult Profile(int id)
+		{
+
+			User user = _userManager.GetUserWithCompanyById(id);
+
+			if (user != null)
+			{
+				return View(user);
+			}
+			return RedirectToAction("Login", "Auth");
+		}
+
 
 		[AllowAnonymous]
 		public IActionResult Register()
@@ -118,7 +132,14 @@ namespace CRM.WebUI.Controllers
 		public async Task<IActionResult> Logout()
 		{
 			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			return RedirectToAction("Home", "Index");
+			return RedirectToAction("Index", "Home");
+		}
+
+		public IActionResult DivByZeroError()
+		{
+			int a = 0;
+			int b = 10 / a;
+			return View();
 		}
 	}
 }

@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CRM.WebUI.Controllers
 {
+	[AllowAnonymous]
+
 	public class CompanyController : Controller
 	{
 		readonly CompanyManager _companyManager = new CompanyManager(new EFCompanyRepo());
 		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
-		
+
 		public IActionResult Index()
 		{
 			var model = _companyManager.GetListAll();

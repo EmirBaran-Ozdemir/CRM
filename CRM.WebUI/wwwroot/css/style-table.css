@@ -12,9 +12,44 @@ thead {
     color: #fff;
 }
 
-th, td {
+    thead:hover {
+        background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        transition: background 0.3s;
+        transition: color 0.9s;
+        color: #000;
+    }
+
+    thead:not(:hover) {
+        transition: color 0.9s;
+    }
+
+    thead .main-element {
+        text-align: center;
+        font-size: 20px;
+        width: 50%;
+    }
+
+    thead .bordered {
+        border-right: 1px solid black;
+    }
+
+th {
     padding: 12px 15px;
     text-align: left;
+    font-size: 20px
+}
+
+td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.centered {
+    text-align: center
+}
+
+.bordered {
+    border-right: 1px solid var(--primary-dark)
 }
 
 tr:nth-child(even) {
@@ -23,5 +58,9 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #e0e0e0;
-    transition: background-color 0.2s;
+    transition: background-color 0.9s;
+}
+
+tr:not(:hover) {
+    transition: background 0.9s;
 }

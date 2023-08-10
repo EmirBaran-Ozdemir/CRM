@@ -18,7 +18,8 @@ namespace CRM.WebUI.Controllers
 		[AllowAnonymous]
 		public IActionResult Index()
 		{
-			var values = _productManager.GetListAll();
+			var values = _productManager.GetAllWithCompanyAndProductType();
+			
 			return View(values);
 		}
 		public IActionResult AddProduct()

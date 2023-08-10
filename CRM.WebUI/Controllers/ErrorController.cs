@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace CRM.WebUI.Controllers
 {
+	[AllowAnonymous]
     public class ErrorController : Controller
     {
 		private readonly ICompositeViewEngine _viewEngine;

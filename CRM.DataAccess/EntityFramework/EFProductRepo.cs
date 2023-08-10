@@ -13,6 +13,7 @@ namespace CRM.DataAccess.EntityFramework
 		{
 			return context.Products.Include(x => x.ProductType).Where(x => x.ProductTypeId == id).ToList();
 		}
+		
 		public Product GetProductWithSellerInfoAndProductTypeById(int id)
 		{
 			return context.Products.Include(x => x.Seller)
@@ -23,6 +24,10 @@ namespace CRM.DataAccess.EntityFramework
 		public List<Product> GetAllProductsWithTypesBySellerId(int id)
 		{
 			return context.Products.Include(x => x.ProductType).Where(x => x.SellerId == id).ToList();
+		}
+		public List<Product> GetAllWithCompanyAndProductType()
+		{
+			return context.Products.Include(x => x.Seller!.Company).Include(x => x.ProductType).ToList();
 		}
 		public bool CheckSameProduct(string name)
 		{

@@ -1,0 +1,95 @@
+﻿@model User
+
+@{
+	Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/style-table.css">
+<link rel="stylesheet" href="~/css/style-main.css /">
+<link rel="stylesheet" href="~/css/utils.css/">
+<div class="d-flex">
+	<div class="container">
+		<div class="bg-white" id="sidebar-wrapper">
+			<div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+				<h2 style="font-weight:bold;">Profile</h2>
+			</div>
+			<div class="list-group" style="align-items:center">
+
+				<table style="width:50%; border-collapse: collapse;">
+					<thead>
+						<tr>
+							<th colspan="3" class="centered">
+								Information about @Model.Name
+							</th>
+						</tr>
+					</thead>
+					<tr>
+						<td class="centered">
+							Email
+						</td>
+						<td colspan="2" class="centered">
+							@Model.Email
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Phone
+						</td>
+						<td colspan="2" class="centered">
+							@Model.Phone
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Address
+						</td>
+						<td colspan="2" class="centered">
+							@Model.Address
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Company
+						</td>
+						<td colspan="2" class="centered">
+							@Model?.Company?.Name
+						</td>
+					</tr>
+					@if (Model?.Products?.Count == 0)
+					{
+						<thead>
+							<tr>
+								<th colspan="2">You didn't add any products yet</th>
+							</tr>
+						</thead>
+					}
+					else
+					{
+						<thead>
+							<tr>
+								<th class="main-element"> Product Name </th>
+								<th class="centered"> Price</th>
+								<th class="centered"> Type </th>
+							</tr>
+						</thead>
+						@foreach (var product in Model?.Products!)
+						{
+							<tr>
+
+								<td class="centered">@product.Name</td>
+								<td class="centered">@product.Price</td>
+								<td class="centered">@product.ProductTypeId</td>
+							</tr>
+						}
+
+					}
+				</table>
+				<div style="max-width:300px">
+
+					<a href="#" class="btn_primary">Edit</a>
+				</div>
+				<a asp-controller="Auth" asp-action="Logout"
+				   class="list-group-item list-group-item-action bg-transparent text-primary fw-bold"><i class="fas fa-power-off me-2"></i>Logout</a>
+			</div>
+		</div>
+	</div>
+</div>

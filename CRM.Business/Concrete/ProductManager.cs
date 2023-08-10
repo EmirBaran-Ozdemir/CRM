@@ -20,6 +20,10 @@ namespace CRM.Business.Concrete
 		{
 			return _productDal.GetAllProductsWithTypesBySellerId(id);
 		}
+		public List<Product> GetAllWithCompanyAndProductType()
+		{
+			return _productDal.GetAllWithCompanyAndProductType();
+		}
 		public bool CheckSameLicense(string license)
 		{
 			return _productDal.CheckSameLicense(license);

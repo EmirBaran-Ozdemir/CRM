@@ -10,57 +10,50 @@
 	<div class="container">
 		<div class="bg-white" id="sidebar-wrapper">
 			<div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
-				<a asp-controller="Home" asp-action="Profile"><img src="~/images/CRM_Logo_White.jpg" alt="logo" class="logo" width="100" height="100" /></a>
 
 			</div>
-			<div class="list-group" style="text-align:center">
-
-				<p>Name: @Model.Name</p>
-				<p>Email: @Model.Email</p>
-				<p>Phone: @Model.Phone</p>
-				<p>Address: @Model.Address</p>
-				<p>Company: @Model?.Company?.Name</p>
-				@if (Model?.Products?.Count == 0)
-				{
-					<h4 style="display:flex; justify-content:center">-- This user didn't add any products yet --</h4>
-				}
-				else
-				{
-					<div style="display:flex; justify-content:center;">
-						<table>
-							<thead>
-								<tr>
-									<th> Name </th>
-									<th> Price</th>
-									<th> Type </th>
-								</tr>
-							</thead>
-							@foreach (var product in Model?.Products!)
-							{
-								<tr>
-
-									<td>@product.Name</td>
-									<td>@product.Price</td>
-									<td>@product.ProductTypeId</td>
-								</tr>
-							}
-							<tr>
-								<td>test</td>
-								<td>teste</td>
-								<td>testuctTypeId</td>
-							</tr>
-
-						</table>
-					</div>
-				}
-
-				<a href="#" class="btn_primary">Edit</a>
-
-
-
-
-				<a asp-controller="Auth" asp-action="Logout"
-				   class="list-group-item list-group-item-action bg-transparent text-primary fw-bold"><i class="fas fa-power-off me-2"></i>Logout</a>
+			<div class="list-group" style="align-items:center">
+				<table style="width:50%">
+					<thead>
+						<tr>
+							<th colspan="2" class="centered">
+								Information about @Model.Name
+							</th>
+						</tr>
+					</thead>
+					<tr>
+						<td class="centered">
+							Email
+						</td>
+						<td class="centered">
+							@Model.Email
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Phone
+						</td>
+						<td class="centered">
+							@Model.Phone
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Address
+						</td>
+						<td class="centered">
+							@Model.Address
+						</td>
+					</tr>
+					<tr>
+						<td class="centered">
+							Company
+						</td>
+						<td class="centered">
+							@Model?.Company?.Name
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

@@ -14,37 +14,35 @@
 
 </head>
 <body>
-
-		@if (Model.Products!.Count > 0)
-		{
-			<div style="display:flex;justify-content:center">
-				<table>
-					<thead>
+	<h3 style="text-align:center">Products</h3>
+	@if (Model.Products!.Count > 0)
+	{
+		<div style="display:flex;justify-content:center">
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (Product product in Model!.Products!)
+					{
 						<tr>
-							<th>Product ID</th>
-							<th>Product Name</th>
-							<th>Product Price</th>
-							<th>Product Type</th>
+							<td><a href="/Product/Product/@product.Id">@product.Name</a></td>
+							<td>@product.Price</td>
+							<td>@product.ProductType!.Name</td>
 						</tr>
-					</thead>
-					<tbody>
-						@foreach (Product product in Model!.Products!)
-						{
-							<tr>
-								<td>@product.Id</td>
-							<td><a href="../../Product/Product/@product.Id">@product.Name</a></td>
-								<td>@product.Price</td>
-								<td>@product.ProductType!.Name</td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-		}
-		else
-		{
-			<h3 style="text-align:center">This company has no products available.</h3>
-		}
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+	else
+	{
+		<h3 style="text-align:center">This company has no products available.</h3>
+	}
 
 </body>
 </html>

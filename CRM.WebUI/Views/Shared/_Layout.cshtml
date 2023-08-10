@@ -1,7 +1,7 @@
 ﻿@{
 	var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
 	var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-	Dictionary<string, List<string>> menuItems = new Dictionary<string, List<string>>();
+	Dictionary<string, List<Dictionary<string, string>>> menuItems = new Dictionary<string, List<Dictionary<string, string>>>();
 }
 
 
@@ -21,7 +21,8 @@
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CRM</a>
+				<a asp-controller="Home" asp-action="Index"><img src="~/images/CRM_Logo_White.jpg" alt="logo" class="logo" width="110" height="50" /></a>
+
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -30,24 +31,55 @@
 					<ul class="navbar-nav flex-grow-1">
 						@if (User.Identity!.IsAuthenticated)
 						{
-							menuItems.Add("Company", new List<string> { "Index" });
-							menuItems.Add("Product", new List<string> { "Index" });
-							menuItems.Add("Auth", new List<string> { "Logout" });
+							menuItems.Add("Company", new List<Dictionary<string, string>>
+							{
+								new Dictionary<string, string>{ { "Index" ,"Companies"} },
+							});
+							menuItems.Add("Product", new List<Dictionary<string, string>>
+							{
+								new Dictionary<string, string>{ { "Index" ,"Products"} },
+							});
+							menuItems.Add("Auth", new List<Dictionary<string, string>>
+							{
+								new Dictionary<string, string>{ { "Logout" ,"Logout"} },
+								new Dictionary<string, string>{ { "MyProfile" ,"My Profile"} },
+							});
 						}
 						else
 						{
-							menuItems.Add("Company", new List<string> { "Index" });
-							menuItems.Add("Product", new List<string> { "Index" });
-							menuItems.Add("Auth", new List<string> { "Login", "Register" });
-						}
-						@foreach (var element in menuItems)
-						{
-							@foreach (string value in element.Value)
+							menuItems.Add("Company", new List<Dictionary<string, string>>
 							{
-								if (element.Key != currentController || value != currentAction)
+								new Dictionary<string, string>{ { "Index" ,"Companies"} },
+							});
+							menuItems.Add("Product", new List<Dictionary<string, string>>
+							{
+								new Dictionary<string, string>{ { "Index" ,"Products"} },
+							});
+							menuItems.Add("Auth", new List<Dictionary<string, string>>
+							{
+								new Dictionary<string, string>{ { "Login" ,"Login"} },
+								new Dictionary<string, string>{ { "Register" ,"Register"} },
+							});
+						}
+						@foreach (var categoryEntry in menuItems)
+						{
+							string categoryName = categoryEntry.Key;
+							List<Dictionary<string, string>> itemList = categoryEntry.Value;
+							@foreach (var item in itemList)
+							{
+								string actionName = item.Keys.First();
+								string actionTitle = item.Values.First();
+
+								if (categoryName != currentController || actionName != currentAction)
 								{
+									var linkText = actionName == "Index"
+									? actionTitle
+									: actionName;
+
 									<li class="nav-item">
-										<a class="nav-link text-dark" asp-area="" asp-controller="@element.Key" asp-action="@value">@(value == "Index" ? element.Key : value)</a>
+										<button class="btn_primary" style="background:transparent;font-size:9px;letter-spacing:1px;padding:7px 5px;text-transform:none">
+											<a class="nav-link text-dark" asp-area="" asp-controller="@categoryName" asp-action="@actionName">@linkText</a>
+										</button>
 									</li>
 								}
 							}
