@@ -10,15 +10,15 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>@ViewData["Title"]</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link rel="stylesheet" href="~/css/style-main.css" />
 	<link rel="stylesheet" href="~/css/error/style-error.css" />
 </head>
 <body>
 	<div class="center-both">
 		<div class="card" >
 			<div class="card-body">
-				<h1 class="gradient-text">@ViewBag.StatusCode</h1>
-				<p class="card-info">Unknown Error Occured.</p>
+				<h1 class="gradient-text">@ViewData["ErrorCode"]</h1>
+				<p class="card-text"><b>@ViewData["ErrorMessage"]</b></p>
 			</div>
 		</div>
 	</div>

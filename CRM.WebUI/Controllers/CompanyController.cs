@@ -2,9 +2,9 @@
 using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
+using CRM.WebUI.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 namespace CRM.WebUI.Controllers
 {
 	[AllowAnonymous]

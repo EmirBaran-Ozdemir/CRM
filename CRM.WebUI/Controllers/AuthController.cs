@@ -115,7 +115,8 @@ namespace CRM.WebUI.Controllers
 				var claims = new List<Claim>
 				{
 					new Claim(ClaimTypes.Name, information.Id.ToString()),
-					new Claim(ClaimTypes.Email, information.Email )
+					new Claim(ClaimTypes.Email, information.Email ),
+					new Claim(ClaimTypes.Role, information.Role!.Name.ToString()!)
 				};
 				var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 				var principal = new ClaimsPrincipal(identity);

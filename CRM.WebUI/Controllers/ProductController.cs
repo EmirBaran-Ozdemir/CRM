@@ -14,12 +14,12 @@ namespace CRM.WebUI.Controllers
 
 		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
 		readonly UserManager _userManager = new UserManager(new EFUserRepo());
-		
-		[AllowAnonymous]
-		public IActionResult Index()
+
+        //[AllowAnonymous]
+        [Authorize(Policy = "Admin")]
+        public IActionResult Index()
 		{
 			var values = _productManager.GetAllWithCompanyAndProductType();
-			
 			return View(values);
 		}
 		public IActionResult AddProduct()

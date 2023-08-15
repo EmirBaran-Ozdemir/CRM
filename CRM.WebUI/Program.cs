@@ -6,6 +6,8 @@ using CRM.Business.ValidationRules;
 using CRM.WebUI.Middleware;
 using Serilog;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -15,19 +17,36 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 //. Services
 // Authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(p => p.LoginPath = "/Auth/Login");
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(p => p.LoginPath = "/Auth/Login");
+
+// Authorization
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy("Admin", policy =>
+	{
+		policy.RequireRole("admin");
+	});
+});
+
+// Add the AuthorizationMiddlewareResultHandler as a singleton
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
+
 builder.Services.AddMvc(config =>
 {
-    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-    config.Filters.Add(new AuthorizeFilter(policy));
+	//var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+	//config.Filters.Add(new AuthorizeFilter(policy));
 });
 
 builder.Services.AddControllersWithViews();
+
 // Validators
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterVal>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVal>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddProductVal>();
 
-builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+builder.Services.AddTransient<ViewExistenceMiddleware>();
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
 //. Application
 var app = builder.Build();
@@ -35,31 +54,26 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 Log.Debug("App build with success");
 
+//app.UseMiddleware<ViewExistenceMiddleware>();
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    //app.UseExceptionHandler("/Error/{0}");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseRouting();
-//app.UseStatusCodePagesWithRedirects("/Error/{0}");
-app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles();
 
-app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 Log.Debug("Terminating...");

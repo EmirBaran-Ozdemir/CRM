@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using Serilog;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace CRM.WebUI.Controllers
 {
 	[AllowAnonymous]
-    public class ErrorController : Controller
-    {
+	public class ErrorController : Controller
+	{
 		private readonly ICompositeViewEngine _viewEngine;
 
 		public ErrorController(ICompositeViewEngine viewEngine)
@@ -21,19 +18,21 @@ namespace CRM.WebUI.Controllers
 			ViewEngineResult viewEngineResult = _viewEngine.FindView(ControllerContext, name, true);
 			return viewEngineResult?.View != null;
 		}
-		[Route("Error/{statusCode}")]
-        [AllowAnonymous]
-        public IActionResult Error(int statusCode)
-        {
-            if(!ViewExists(statusCode.ToString()))
+
+		[Route("Error")]
+		public IActionResult Error(string message, int code)
+		{
+			if (message != null)
 			{
-				Log.Error("No default error view found");
-				ViewBag.StatusCode = statusCode;
-				return View("Error");
+				ViewData["ErrorMessage"] = message;
+			}
+			if (code != 0)
+			{
+				ViewData["ErrorCode"] = code;
 			}
 
-			return View(statusCode.ToString());
-			
+			return View();
+
 		}
-    }
+	}
 }
