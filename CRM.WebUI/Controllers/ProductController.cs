@@ -31,7 +31,7 @@ namespace CRM.WebUI.Controllers
 		{
 			var license = LicenseGenerator.GenerateLicense();
 
-			while(!_productManager.CheckSameLicense(license))
+			while(_productManager.CheckSameLicense(license))
 				license = LicenseGenerator.GenerateLicense();
 
 			model.User = _userManager.GetUserWithCompanyById(int.Parse(HttpContext.User.Identity!.Name!));

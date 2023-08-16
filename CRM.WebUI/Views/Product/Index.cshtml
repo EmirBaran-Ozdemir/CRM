@@ -10,6 +10,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>CRM Application</title>
+
+	<link rel="stylesheet" type="text/css" href="/css/utils.css">
 	<link rel="stylesheet" type="text/css" href="/css/style-table.css">
 
 </head>
@@ -31,14 +33,19 @@
 					@foreach (Product product in Model)
 					{
 						<tr>
-							<td class="centered">@product.Name</td>
+							<td class="centered"><a href="/Product/Product/@product.Id">@product.Name</a></td>
 							<td class="centered">@product.Price</td>
 							<td class="centered">@product.ProductType!.Name</td>
-							<td class="centered"><a href="/Company/@product.Seller!.CompanyId"></a>@product.Seller!.Company!.Name</td>
+							<td class="centered"><a href="/Company/Products/@product.Seller!.CompanyId">@product.Seller!.Company!.Name</a></td>
 						</tr>
 					}
 				</tbody>
 			</table>
+
+		</div>
+		<br />
+		<div style="display:flex;justify-content:center">
+			<a href="/" class="btn_primary">Add Product</a>
 		</div>
 	}
 	else

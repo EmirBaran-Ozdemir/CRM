@@ -20,10 +20,7 @@
 				<p>Price: @Model.Price</p>
 				<p>ProductType: @Model.ProductType?.Name</p>
 				<p>Details: @Model.Details</p>
-				<p>Company: <a href="/user/profile/@Model.Seller!.CompanyId" ></a>@Model.Seller?.Company!.Name</p>
-
-				<a asp-controller="Auth" asp-action="Logout"
-				   class="list-group-item list-group-item-action bg-transparent text-primary fw-bold"><i class="fas fa-power-off me-2"></i>Logout</a>
+				<p>Company: <a href="/user/profile/@Model.Seller!.CompanyId" ></a>@Model.Seller?.Company!.Name</p
 			</div>
 		</div>
 	</div>

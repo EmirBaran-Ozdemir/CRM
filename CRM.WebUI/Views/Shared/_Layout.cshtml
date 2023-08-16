@@ -16,83 +16,101 @@
 		  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 	<link rel="stylesheet" href="~/css/style-main.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/utils.css" asp-append-version="true" />
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			margin: 0;
+		}
+
+		#wrapper {
+			flex: 1;
+		}
+
+		.footer {
+			margin-top: auto;
+		}
+	</style>
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-			<div class="container-fluid">
-				<a asp-controller="Home" asp-action="Index"><img src="~/images/CRM_Logo_White.jpg" alt="logo" class="logo" width="110" height="50" /></a>
+	<div id="wrapper">
+		<header>
+			<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+				<div class="container-fluid">
+					<a asp-controller="Home" asp-action="Index"><img src="~/images/CRM_Logo_White.jpg" alt="logo" class="logo" width="110" height="50" /></a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<ul class="navbar-nav flex-grow-1">
-						@if (User.Identity!.IsAuthenticated)
-						{
-							menuItems.Add("Company", new List<Dictionary<string, string>>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+							aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+						<ul class="navbar-nav flex-grow-1">
+							@if (User.Identity!.IsAuthenticated)
 							{
-								new Dictionary<string, string>{ { "Index" ,"Companies"} },
-							});
-							menuItems.Add("Product", new List<Dictionary<string, string>>
-							{
-								new Dictionary<string, string>{ { "Index" ,"Products"} },
-							});
-							menuItems.Add("Auth", new List<Dictionary<string, string>>
-							{
-								new Dictionary<string, string>{ { "Logout" ,"Logout"} },
-								new Dictionary<string, string>{ { "MyProfile" ,"My Profile"} },
-							});
-						}
-						else
-						{
-							menuItems.Add("Company", new List<Dictionary<string, string>>
-							{
-								new Dictionary<string, string>{ { "Index" ,"Companies"} },
-							});
-							menuItems.Add("Product", new List<Dictionary<string, string>>
-							{
-								new Dictionary<string, string>{ { "Index" ,"Products"} },
-							});
-							menuItems.Add("Auth", new List<Dictionary<string, string>>
-							{
-								new Dictionary<string, string>{ { "Login" ,"Login"} },
-								new Dictionary<string, string>{ { "Register" ,"Register"} },
-							});
-						}
-						@foreach (var categoryEntry in menuItems)
-						{
-							string categoryName = categoryEntry.Key;
-							List<Dictionary<string, string>> itemList = categoryEntry.Value;
-							@foreach (var item in itemList)
-							{
-								string actionName = item.Keys.First();
-								string actionTitle = item.Values.First();
-
-								if (categoryName != currentController || actionName != currentAction)
+								menuItems.Add("Company", new List<Dictionary<string, string>>
 								{
-									var linkText = actionName == "Index"
-									? actionTitle
-									: actionName;
+									new Dictionary<string, string>{ { "Index" ,"Companies"} },
+								});
+								menuItems.Add("Product", new List<Dictionary<string, string>>
+								{
+									new Dictionary<string, string>{ { "Index" ,"Products"} },
+								});
+								menuItems.Add("Auth", new List<Dictionary<string, string>>
+								{
+									new Dictionary<string, string>{ { "Logout" ,"Logout"} },
+									new Dictionary<string, string>{ { "MyProfile" ,"My Profile"} },
+								});
+							}
+							else
+							{
+								menuItems.Add("Company", new List<Dictionary<string, string>>
+								{
+									new Dictionary<string, string>{ { "Index" ,"Companies"} },
+								});
+								menuItems.Add("Product", new List<Dictionary<string, string>>
+								{
+									new Dictionary<string, string>{ { "Index" ,"Products"} },
+								});
+								menuItems.Add("Auth", new List<Dictionary<string, string>>
+								{
+									new Dictionary<string, string>{ { "Login" ,"Login"} },
+									new Dictionary<string, string>{ { "Register" ,"Register"} },
+								});
+							}
+							@foreach (var categoryEntry in menuItems)
+							{
+								string categoryName = categoryEntry.Key;
+								List<Dictionary<string, string>> itemList = categoryEntry.Value;
+								@foreach (var item in itemList)
+								{
+									string actionName = item.Keys.First();
+									string actionTitle = item.Values.First();
 
-									<li class="nav-item">
-										<button class="btn_primary" style="background:transparent;font-size:9px;letter-spacing:1px;padding:7px 5px;text-transform:none">
-											<a class="nav-link text-dark" asp-area="" asp-controller="@categoryName" asp-action="@actionName">@linkText</a>
-										</button>
-									</li>
+									if (categoryName != currentController || actionName != currentAction)
+									{
+										var linkText = actionName == "Index"
+										? actionTitle
+										: actionName;
+
+										<li class="nav-item">
+											<button class="btn_primary" style="background:transparent;font-size:9px;letter-spacing:1px;padding:7px 5px;text-transform:none">
+												<a class="nav-link text-dark" asp-area="" asp-controller="@categoryName" asp-action="@actionName">@linkText</a>
+											</button>
+										</li>
+									}
 								}
 							}
-						}
-					</ul>
+						</ul>
+					</div>
 				</div>
-			</div>
-		</nav>
-	</header>
+			</nav>
+		</header>
+		<main role="main">
+			@RenderBody()
+		</main>
+	</div>
 
-	<main role="main">
-		@RenderBody()
-	</main>
 
 	<footer class="border-top footer text-muted">
 		&copy; 2023 - CRM

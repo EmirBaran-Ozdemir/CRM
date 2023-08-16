@@ -34,8 +34,8 @@ builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, Authorizati
 
 builder.Services.AddMvc(config =>
 {
-	//var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-	//config.Filters.Add(new AuthorizeFilter(policy));
+	var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+	config.Filters.Add(new AuthorizeFilter(policy));
 });
 
 builder.Services.AddControllersWithViews();
@@ -45,7 +45,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterVal>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVal>();
 builder.Services.AddValidatorsFromAssemblyContaining<AddProductVal>();
 
-builder.Services.AddTransient<ViewExistenceMiddleware>();
+builder.Services.AddTransient<NotFoundPageHandlerMiddleware>();
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
 //. Application
@@ -56,6 +56,7 @@ Log.Debug("App build with success");
 
 //app.UseMiddleware<ViewExistenceMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+app.UseMiddleware<NotFoundPageHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

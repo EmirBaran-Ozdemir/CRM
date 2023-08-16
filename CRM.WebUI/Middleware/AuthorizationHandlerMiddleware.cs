@@ -16,13 +16,13 @@ namespace CRM.WebUI.Middleware
 			PolicyAuthorizationResult authorizeResult)
 		{
 
-			if (authorizeResult.Forbidden)
-			{
+			if (authorizeResult.Forbidden && !authorizeResult.Succeeded)
+				{
 				context.Response.StatusCode = StatusCodes.Status403Forbidden;
 
-				throw new NotAuthorizedException($"You do not have the necessary permissions to access this page.");
+				throw new NotAuthorizedException($"You do not have the necessary permissions to access {context.Request.Path} page.");
 			}
-			await globalExceptionHandlerMiddleware.InvokeAsync(context, next);
+			await next.Invoke(context);
 		}
 	}
 	
