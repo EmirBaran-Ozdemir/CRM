@@ -1,0 +1,61 @@
+﻿@model List<Order>
+
+@{
+	Layout = "_layout";
+	ViewData["Title"] = "Orders";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CRM Application</title>
+
+	<link rel="stylesheet" type="text/css" href="/css/utils.css">
+	<link rel="stylesheet" type="text/css" href="/css/style-table.css">
+
+</head>
+<body>
+	<h3 style="text-align:center">My Orders</h3>
+	@if (Model.Count > 0)
+	{
+		<div style="display:flex;justify-content:center">
+			<table>
+				<thead>
+					<tr>
+						
+						<th class="main-element">Product</th>
+						<th class="centered"> Price</th>
+						<th class="centered">Order Date</th>
+						<th class="centered">Type</th>
+						<th class="centered">Company</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (Order order in Model)
+					{
+						<tr>
+							<td class="centered"><a href="/Product/Product/@order.Product!.Id">@order.Product!.Name</a></td>
+							<td class="centered">@order.CurrentPrice</td>
+							<td class="centered">@order.OrderDate</td>
+							<td class="centered">@order.Product!.ProductType!.Name</td>
+							<td class="centered"><a href="/Company/Products/@order.Product!.Seller!.CompanyId">@order.Product.Seller!.Company!.Name</a></td>
+						</tr>
+					}
+				</tbody>
+			</table>
+
+		</div>
+		<br />
+
+	}
+	else
+	{
+		<h3 style="text-align:center">You have no orders to list.</h3>
+	}
+	<div style="display:flex;justify-content:center">
+		<a href="/Product/Index" class="btn_primary">Create Order</a>
+	</div>
+
+</body>
+</html>

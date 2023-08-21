@@ -27,6 +27,7 @@
 						<th class="centered">Price</th>
 						<th class="centered">Type</th>
 						<th class="centered">Company</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -37,6 +38,16 @@
 							<td class="centered">@product.Price</td>
 							<td class="centered">@product.ProductType!.Name</td>
 							<td class="centered"><a href="/Company/Products/@product.Seller!.CompanyId">@product.Seller!.Company!.Name</a></td>
+							@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+							{
+								<td>
+									<input type="hidden" name="product.Id" value="@product.Id"/>
+									<input type="hidden" name="product.Price" value="@product.Price" />
+									<button type="submit" class="btn_primary mt-3 mb-3" >
+										Buy
+									</button>
+								</td>
+							}
 						</tr>
 					}
 				</tbody>
@@ -44,9 +55,12 @@
 
 		</div>
 		<br />
-		<div style="display:flex;justify-content:center">
-			<a href="/" class="btn_primary">Add Product</a>
-		</div>
+		@if (ViewBag.IsAuthorized)
+		{
+			<div style="display:flex;justify-content:center">
+				<a href="/Product/AddProduct" class="btn_primary">Add Product</a>
+			</div>
+		}
 	}
 	else
 	{

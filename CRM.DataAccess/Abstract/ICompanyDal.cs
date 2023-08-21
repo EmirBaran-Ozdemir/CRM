@@ -6,5 +6,6 @@ namespace CRM.DataAccess.Abstract
 	{
 		List<User> GetUsersWithRolesByCompanyId(int id);
 		List<User> GetCompanyEmployees(int id);
+		bool CheckCompany(string name);
 	}
 }

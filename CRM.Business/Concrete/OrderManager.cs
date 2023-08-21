@@ -19,16 +19,22 @@ namespace CRM.Business.Concrete
 		}
 		public Order CreateOrder(Product product, int customerId)
 		{
-			Order order = new Order();
-			order.CustomerId = customerId;
-			order.ProductId = product.Id;
-			order.OrderDate = DateOnly.FromDateTime(DateTime.Now.Date);
-			order.CurrentPrice = product.Price;
+			Order order = new Order
+			{
+				CustomerId = customerId,
+				ProductId = product.Id,
+				OrderDate = DateOnly.FromDateTime(DateTime.Now.Date),
+				CurrentPrice = product.Price
+			};
 			return order;
 		}
 		public Order GetOrder(int customerId)
 		{
 			return _orderDal.GetOrder(customerId);
+		}
+		public List<Order> GetAllWithSellerInfo(int id)
+		{
+			return _orderDal.GetAllWithSellerInfo(id);
 		}
 	}
 }

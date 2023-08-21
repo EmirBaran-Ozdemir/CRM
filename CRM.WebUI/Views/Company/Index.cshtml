@@ -39,6 +39,12 @@
 				</tbody>
 			</table>
 		</div>
+		@if (ViewBag.IsAuthorized)
+		{
+			<div style="display:flex;justify-content:center">
+				<a href="/Company/AddCompany" class="btn_primary">Add Company</a>
+			</div>
+		}
 	}
 	else
 	{

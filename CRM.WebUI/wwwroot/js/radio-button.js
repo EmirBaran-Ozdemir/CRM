@@ -1,7 +1,7 @@
 function switchRadioColors(select, deselect) {
-	deselect.style.backgroundColor = "#fff";
+	deselect.style.background = "#fff";
 	deselect.style.color = "#2b6df5";
-	select.style.backgroundColor = "#2b6df5";
+	select.style.background = "linear-gradient(#222277,#007bff)";
 	select.style.color = "#fff";
 
 }

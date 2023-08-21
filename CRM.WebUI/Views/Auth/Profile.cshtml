@@ -9,51 +9,55 @@
 <div class="d-flex">
 	<div class="container">
 		<div class="bg-white" id="sidebar-wrapper">
-			<div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
-
-			</div>
 			<div class="list-group" style="align-items:center">
-				<table style="width:50%">
-					<thead>
+				@if (Model == null)
+				{
+					<h3>User not found.</h3>
+				}
+				else
+				{
+					<table style="width:50%">
+						<thead>
+							<tr>
+								<th colspan="2" class="centered">
+									Information about @Model.Name
+								</th>
+							</tr>
+						</thead>
 						<tr>
-							<th colspan="2" class="centered">
-								Information about @Model.Name
-							</th>
+							<td class="centered">
+								Email
+							</td>
+							<td class="centered">
+								@Model.Email
+							</td>
 						</tr>
-					</thead>
-					<tr>
-						<td class="centered">
-							Email
-						</td>
-						<td class="centered">
-							@Model.Email
-						</td>
-					</tr>
-					<tr>
-						<td class="centered">
-							Phone
-						</td>
-						<td class="centered">
-							@Model.Phone
-						</td>
-					</tr>
-					<tr>
-						<td class="centered">
-							Address
-						</td>
-						<td class="centered">
-							@Model.Address
-						</td>
-					</tr>
-					<tr>
-						<td class="centered">
-							Company
-						</td>
-						<td class="centered">
-							@Model?.Company?.Name
-						</td>
-					</tr>
-				</table>
+						<tr>
+							<td class="centered">
+								Phone
+							</td>
+							<td class="centered">
+								@Model.Phone
+							</td>
+						</tr>
+						<tr>
+							<td class="centered">
+								Address
+							</td>
+							<td class="centered">
+								@Model.Address
+							</td>
+						</tr>
+						<tr>
+							<td class="centered">
+								Company
+							</td>
+							<td class="centered">
+								@Model?.Company?.Name
+							</td>
+						</tr>
+					</table>
+				}
 			</div>
 		</div>
 	</div>

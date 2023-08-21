@@ -1,7 +1,13 @@
 ﻿/* landing section */
-.container {
-    margin: 40px;
+.h2 {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 2.5rem;
+    color: var(--black);
+    margin-bottom: 1rem;
 }
+
 section.landing {
     margin:0;
     padding: 0 0;
@@ -14,10 +20,12 @@ section.landing {
         margin:0;
     }
     section.landing .text {
-        font-weight: 600;
-        font-size: 32px;
-        color: var(--black);
-        padding-top: 90px;
+        font-size: 45px;
+        font-weight: 700;
+        background-image: -webkit-linear-gradient(0deg, var(--primary), var(--primary-dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-top: 25px;
     }
 
         section.landing .text .text-secondary {
@@ -31,7 +39,8 @@ section.landing {
     }
 
     section.landing .main-image {
-        width:120%;
+        padding-top: 100px;
+        width:100%;
         position: relative;
         overflow-x: hidden;
     }

@@ -12,10 +12,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"] - CRM</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet"
-		  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 	<link rel="stylesheet" href="~/css/style-main.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/style-spinner.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/utils.css" asp-append-version="true" />
+
 	<style>
 		body {
 			display: flex;
@@ -32,6 +34,7 @@
 			margin-top: auto;
 		}
 	</style>
+
 </head>
 <body>
 	<div id="wrapper">
@@ -49,34 +52,34 @@
 							@if (User.Identity!.IsAuthenticated)
 							{
 								menuItems.Add("Company", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Index" ,"Companies"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Index" ,"Companies"} },
+							});
 								menuItems.Add("Product", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Index" ,"Products"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Index" ,"Products"} },
+							});
 								menuItems.Add("Auth", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Logout" ,"Logout"} },
-									new Dictionary<string, string>{ { "MyProfile" ,"My Profile"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Logout" ,"Logout"} },
+							new Dictionary<string, string>{ { "MyProfile" ,"My Profile"} },
+							});
 							}
 							else
 							{
 								menuItems.Add("Company", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Index" ,"Companies"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Index" ,"Companies"} },
+							});
 								menuItems.Add("Product", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Index" ,"Products"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Index" ,"Products"} },
+							});
 								menuItems.Add("Auth", new List<Dictionary<string, string>>
-								{
-									new Dictionary<string, string>{ { "Login" ,"Login"} },
-									new Dictionary<string, string>{ { "Register" ,"Register"} },
-								});
+							{
+							new Dictionary<string, string>{ { "Login" ,"Login"} },
+							new Dictionary<string, string>{ { "Register" ,"Register"} },
+							});
 							}
 							@foreach (var categoryEntry in menuItems)
 							{
@@ -95,7 +98,7 @@
 
 										<li class="nav-item">
 											<button class="btn_primary" style="background:transparent;font-size:9px;letter-spacing:1px;padding:7px 5px;text-transform:none">
-												<a class="nav-link text-dark" asp-area="" asp-controller="@categoryName" asp-action="@actionName">@linkText</a>
+												<a class="nav-link text-dark dynamic-link" asp-area="" asp-controller="@categoryName" asp-action="@actionName">@linkText</a>
 											</button>
 										</li>
 									}
@@ -103,20 +106,114 @@
 							}
 						</ul>
 					</div>
+					<div id="messageContainer">
+						@if (ViewBag.ProcessMessage != null)
+						{
+							@if (ViewBag.ProcessStatus)
+							{
+								<div class="alert alert-success align-items-center animate__animated animate__fadeInDown" style="position:relative;top:90px" role="alert">
+									<i class="fa-solid fa-check"></i>
+									@ViewBag.ProcessMessage
+								</div>
+							}
+							else
+							{
+								<div class="alert alert-danger d-flex align-items-center animate__animated animate__fadeInDown" style="position:relative;top:90px" role="alert">
+									<i class="fa-solid fa-triangle-exclamation"></i>
+									@ViewBag.ProcessMessage
+								</div>
+							}
+						}
+					</div>
+
+
 				</div>
+
 			</nav>
 		</header>
 		<main role="main">
-			@RenderBody()
+
+			<section id="spinner-section" style="height:720px;position:relative">
+				<img src="~/images/Spinner.gif" style="position:absolute;top:33%;left:44%" />
+			</section>
+			<div id="base">
+				@RenderBody()
+			</div>
+
 		</main>
 	</div>
 
 
-	<footer class="border-top footer text-muted">
-		&copy; 2023 - CRM
+	<footer class="border-top footer text-muted justify-content-center" style="margin-bottom:0;padding:14px">
+		<p style="margin-bottom:0">
+			&copy; 2023 - CRM
+		</p>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		var messageContainer = document.getElementById('messageContainer');
+		if (messageContainer) {
+			setTimeout(function () {
+				messageContainer.style.opacity = 0;
+				messageContainer.style.transform = 'translateY(-45px)';
+				messageContainer.addEventListener('transitionend', function () {
+					messageContainer.style.display = 'none';
+				});
+			}, 2500);
+		}
+	</script>
+
+
+
+	<script>
+		var spinnerContainer = document.getElementById('spinner-section');
+		var baseContent = document.getElementById('base');
+		spinnerContainer.style.display = 'block';
+		baseContent.style.display = 'none';
+
+		document.addEventListener('DOMContentLoaded', function () {
+			spinnerContainer.style.display = 'none';
+			baseContent.style.display = 'block';
+
+			var dynamicLinks = document.querySelectorAll('.dynamic-link');
+			var buttons = document.querySelectorAll('button');
+			var inputFields = document.querySelectorAll('.form-control');
+
+			dynamicLinks.forEach(function (link) {
+				link.addEventListener('click', function (event) {
+					event.preventDefault();
+
+					spinnerContainer.style.display = 'block';
+					baseContent.style.display = 'none';
+
+					var linkUrl = link.getAttribute('href');
+					window.location.href = linkUrl;
+				});
+			});
+
+			buttons.forEach(function (button) {
+				button.addEventListener('click', function (event) {
+					var allFieldsFilled = true;
+
+					inputFields.forEach(function (field) {
+						if (field.value === "") {
+							allFieldsFilled = false;
+							return;
+						}
+					});
+
+					if (allFieldsFilled) {
+
+						spinnerContainer.style.display = 'block';
+						baseContent.style.display = 'none';
+					}
+				});
+			});
+		});
+
+	</script>
+
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

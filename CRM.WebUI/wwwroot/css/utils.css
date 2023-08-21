@@ -22,7 +22,7 @@
     letter-spacing: 2px;
     border-radius: 5px;
     cursor: pointer;
-    overflow: hidden;
+    /*overflow: hidden;*/
     background: linear-gradient(90deg, var(--primary-dark), var(--primary));
     transition: transform 0.5s ease;
 }

@@ -7,18 +7,6 @@ namespace CRM.WebUI.Controllers
 	[AllowAnonymous]
 	public class ErrorController : Controller
 	{
-		private readonly ICompositeViewEngine _viewEngine;
-
-		public ErrorController(ICompositeViewEngine viewEngine)
-		{
-			_viewEngine = viewEngine;
-		}
-		private bool ViewExists(string name)
-		{
-			ViewEngineResult viewEngineResult = _viewEngine.FindView(ControllerContext, name, true);
-			return viewEngineResult?.View != null;
-		}
-
 		[Route("Error")]
 		public IActionResult Error(string message, int code)
 		{
@@ -30,9 +18,7 @@ namespace CRM.WebUI.Controllers
 			{
 				ViewData["ErrorCode"] = code;
 			}
-
 			return View();
-
 		}
 	}
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CRM.Business.Concrete
 {
-	public class ProductTypeManager : GenericManager<ProductType>, IProductTypeService
+	public class InvoiceManager : GenericManager<Invoice>, IInvoiceService
 	{
 	}
 }

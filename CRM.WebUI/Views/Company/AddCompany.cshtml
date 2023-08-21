@@ -1,5 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Company
+
 @{
+	ViewData["Title"] = "Add Company";
+	Layout = "_layout";
 }
+<head>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="~/css/style-main.css" />
+	<link rel="stylesheet" href="~/css/company/style-addCompany.css" />
+	<link rel="stylesheet" href="~/css/style-inputs.css" />
+	<link rel="stylesheet" href="~/css/style-radio.css" />
+	<script src="~/js/radio-button.js"></script>
+
+</head>
+
+<!-- add company -->
+<section class="addCompany">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 m-auto">
+				<div class="card m-auto">
+					<div class="card-body">
+						<div class="form">
+							<h2 style="display:flex; justify-content:center">Add Company</h2>
+
+							@using (Html.BeginForm("AddCompany", "Company", FormMethod.Post))
+							{
+								<div class="input-field">
+									@Html.TextBoxFor(x=>x.Name, new { @class = "form-control", @placeholder = "Company name", @required = "required" })
+									@Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-error" })
+									<i class="fa-solid fa-building icon"></i>
+								</div>
+								<button type="submit" class="btn_primary mt-3 mb-3" id="create">
+									Add Company
+								</button>
+							}
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

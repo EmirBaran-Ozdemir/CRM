@@ -16,17 +16,22 @@ namespace CRM.WebUI.Controllers
 		readonly UserManager _userManager = new UserManager(new EFUserRepo());
 
         //[AllowAnonymous]
-        [Authorize(Policy = "Admin")]
+		
         public IActionResult Index()
 		{
 			var values = _productManager.GetAllWithCompanyAndProductType();
+			ViewBag.IsAuthorized = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("seller");
+			ViewBag.ProcessStatus = TempData.ContainsKey("ProcessStatus") && (bool)TempData["ProcessStatus"]!;
+			ViewBag.ProcessMessage = TempData["ProcessMessage"] as string;
 			return View(values);
 		}
+		[Authorize(Policy = "Seller")]
 		public IActionResult AddProduct()
 		{
 			return View();
 		}
 		[HttpPost]
+		[Authorize(Policy = "Seller")]
 		public IActionResult AddProduct(AddProductModel model)
 		{
 			var license = LicenseGenerator.GenerateLicense();
@@ -47,15 +52,21 @@ namespace CRM.WebUI.Controllers
 				{
 					ModelState.AddModelError(failure.PropertyName, failure.ErrorMessage);
 				}
+				ViewBag.ProcessStatus = false;
+				ViewBag.ProcessMessage = "Failed to add product";
 				return View(model);
 			}
 
 			if (_productManager.CheckSameProduct(model.Product.Name))
 			{
 				ModelState.AddModelError("Product.Name", "This product is already exist in shop.");
+				ViewBag.ProcessStatus = false;
+				ViewBag.ProcessMessage = "This product is already exist in shop.";
 				return View(model);
 			}
 			_productManager.Add(model.Product);
+			TempData["ProcessStatus"] = true;
+			TempData["ProcessMessage"] = "Product added succesfully.";
 			return RedirectToAction("Index");
 		}
 

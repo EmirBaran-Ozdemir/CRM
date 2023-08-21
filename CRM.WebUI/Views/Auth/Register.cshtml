@@ -17,6 +17,9 @@
 	<link rel="stylesheet" href="~/css/style-radio.css" />
 	<script src="~/js/radio-button.js"></script>
 	<script src="~/js/password-handler.js"></script>
+	<style>
+		#User_Adresss{width:100%!important}
+	</style>
 </head>
 
 
@@ -46,14 +49,14 @@
 						<br>
 						<div class="row">
 							<div class="input-field col-6">
-								@Html.TextBoxFor(x=>x.User.Password, new { @class = "form-control", @placeholder = "Password", @onkeyup="confirm_password()",@id="password", @required = "required"})
+								@Html.TextBoxFor(x=>x.User.Password, new { @class = "form-control password",@type = "password", @placeholder = "Password", @onkeyup="confirm_password()",@id="password", @required = "required"})
 								@Html.ValidationMessageFor(x => x.User.Password, "", new { @class = "text-error" })
 								<i class="fa-solid fa-lock "></i>
 							</div>
 							<div class="input-field col-6">
 								<input type="password" class="password" placeholder="Confirm Password" id="confirmPassword" onkeyup="confirm_password()" required />
 								<i class="fa-solid fa-lock "></i>
-								<i class="fa-solid fa-eye-slash showHidePw"></i>
+								<i class="fa-solid fa-eye-slash showHidePw" style="position:absolute;right:10px"></i>
 								<span id="wrong_pass_alert"></span>
 
 							</div>
@@ -72,8 +75,8 @@
 								<i class="fa-solid fa-dollar"></i>
 							</div>
 						</div>
-						<div class="input-field">
-							@Html.TextBoxFor(x=>x.User.Address, new { @class = "form-control", @placeholder = "Address", @required = "required" })
+						<div class="input-field" >
+							@Html.TextBoxFor(x=>x.User.Address, new { @class = "form-control", @placeholder = "Address", @required = "required", @style="width:100%"})
 							@Html.ValidationMessageFor(x => x.User.Address, "", new {  @class = "text-error" })
 							<i class="fa-solid fa-home"></i>
 						</div>

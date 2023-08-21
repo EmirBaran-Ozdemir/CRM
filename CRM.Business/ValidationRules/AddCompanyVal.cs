@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.Business.ValidationRules
 {
-	public class AddOrderVal : GenericVal<Order>
+	public class AddCompanyVal : GenericVal<Company>
 	{
 	}
 }

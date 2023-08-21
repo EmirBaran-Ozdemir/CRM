@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace CRM.Business.Concrete
 {
-	public class ProductManager : GenericManager<Product>, IProductSerivce
+	public class ProductManager : GenericManager<Product>, IProductService
 	{
 		IProductDal _productDal;
 		public ProductManager(IProductDal productDal)

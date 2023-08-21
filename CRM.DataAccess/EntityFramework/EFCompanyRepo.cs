@@ -19,6 +19,9 @@ namespace CRM.DataAccess.EntityFramework
 		{
 			return context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
 		}
-
+		public bool CheckCompany(string name)
+		{
+			return context.Companies.FirstOrDefault(x => x.Name == name) != null;
+		}
 	}
 }

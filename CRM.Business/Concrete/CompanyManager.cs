@@ -21,5 +21,9 @@ namespace CRM.Business.Concrete
 		{
 			return _companyDal.GetUsersWithRolesByCompanyId(id);
 		}
+		public bool CheckCompany(string name)
+		{
+			return _companyDal.CheckCompany(name);
+		}
 	}
 }

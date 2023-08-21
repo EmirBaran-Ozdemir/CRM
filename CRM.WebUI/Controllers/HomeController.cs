@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using CRM.DataTypeObjects.Models;
 
-namespace CRM.Controllers
+namespace CRM.WebUI.Controllers
 {
 	[Authorize]
 	public class HomeController : Controller
@@ -12,12 +12,10 @@ namespace CRM.Controllers
 		[AllowAnonymous]
 		public IActionResult Index()
 		{
+			ViewBag.ProcessStatus = TempData.ContainsKey("ProcessStatus") && (bool)TempData["ProcessStatus"]!;
+			ViewBag.ProcessMessage = TempData["ProcessMessage"] as string;
 			return View();
 		}
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
+
 	}
 }

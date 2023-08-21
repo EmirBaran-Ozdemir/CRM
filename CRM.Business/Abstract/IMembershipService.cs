@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRM.Business.ValidationRules
+namespace CRM.Business.Abstract
 {
-	public class AddOrderVal : GenericVal<Order>
+	public interface IMembershipService : IGenericService<Membership>
 	{
 	}
 }

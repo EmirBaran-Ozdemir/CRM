@@ -6,10 +6,10 @@
 
 <head>
 	<!-- Custom CSS -->
-	
+
 	<link rel="stylesheet" href="~/css/auth/style-main.css" />
 	<link rel="stylesheet" href="~/css/auth/style-login.css" />
-	
+
 
 	<script src="~/js/password-handler.js"></script>
 </head>
@@ -32,7 +32,7 @@
 								</div>
 
 								<div class="input-field">
-									@Html.TextBoxFor(x=>x.Password, new { @class = "form-control", @placeholder = "Password", @id="password", @required = "required"})
+									@Html.TextBoxFor(x=>x.Password, new { @class = "form-control password",@type = "password", @placeholder = "Password", @id="password", @required = "required"})
 									@Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-error" })
 									<i class="fas fa-lock icon"></i>
 									<i class="fa-regular fa-eye-slash showHidePw"></i>

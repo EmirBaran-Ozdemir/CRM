@@ -1,10 +1,15 @@
 ﻿using CRM.Business.Concrete;
+using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
 using CRM.WebUI.Middleware;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+
 namespace CRM.WebUI.Controllers
 {
 	[AllowAnonymous]
@@ -17,6 +22,9 @@ namespace CRM.WebUI.Controllers
 		public IActionResult Index()
 		{
 			var model = _companyManager.GetListAll();
+			ViewBag.IsAuthorized = HttpContext.User.IsInRole("admin");
+			ViewBag.ProcessStatus = TempData.ContainsKey("ProcessStatus") && (bool)TempData["ProcessStatus"]!;
+			ViewBag.ProcessMessage = TempData["ProcessMessage"] as string;
 			return View(model);
 		}
 
@@ -40,6 +48,40 @@ namespace CRM.WebUI.Controllers
 			model.Users = _companyManager.GetUsersWithRolesByCompanyId(id);
 			
 			return View("CompanyEmployees", model);
+		}
+
+		[Authorize(Policy = "Admin")]
+		public IActionResult AddCompany()
+		{
+			return View();
+		}
+		[HttpPost]
+		public IActionResult AddCompany(Company model)
+		{
+			AddCompanyVal validator = new AddCompanyVal();
+			ValidationResult results = validator.Validate(model);
+			if (results.IsValid == false)
+			{
+
+				foreach (var failure in results.Errors)
+				{
+					ModelState.AddModelError(failure.PropertyName, failure.ErrorMessage);
+				}
+				return View(model);
+			}
+
+			var existingCompany = _companyManager.CheckCompany(model.Name);
+			if (existingCompany)
+			{
+				ModelState.AddModelError("Name", "This company already exists.");
+				ViewBag.ProcessStatus = false;
+				ViewBag.ProcessMessage = "Failed to add company.";
+				return View();
+			}
+			_companyManager.Add(model);
+			TempData["ProcessStatus"] = true;
+			TempData["ProcessMessage"] = "Company added succesfully";
+			return RedirectToAction("Index");
 		}
 	}
 }

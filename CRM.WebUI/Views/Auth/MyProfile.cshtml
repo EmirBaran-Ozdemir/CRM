@@ -51,14 +51,14 @@
 							Company
 						</td>
 						<td colspan="2" class="centered">
-							@Model?.Company?.Name
+							<a href="/Company/Products/@Model?.Company?.Id">@Model?.Company?.Name</a>
 						</td>
 					</tr>
 					@if (Model?.Products?.Count == 0)
 					{
 						<thead>
 							<tr>
-								<th colspan="2">You didn't add any products yet</th>
+								<th class="centered" colspan="2">You didn't add any products yet</th>
 							</tr>
 						</thead>
 					}
@@ -71,11 +71,11 @@
 								<th class="centered"> Type </th>
 							</tr>
 						</thead>
-						@foreach (var product in Model?.Products!)
+						@foreach (var product in Model!.Products!)
 						{
 							<tr>
 
-								<td class="centered">@product.Name</td>
+								<td class="centered"><a href="/Product/Product/@product.Id">@product.Name</a></td>
 								<td class="centered">@product.Price</td>
 								<td class="centered">@product.ProductTypeId</td>
 							</tr>
@@ -88,6 +88,7 @@
 
 					<a href="#" class="btn_primary">Edit</a>
 				</div>
+				<br />
 				<div class="align-items-center">
 
 					<a asp-controller="Auth" asp-action="Logout" class="btn_primary"><i class="fas fa-power-off me-2"></i>Logout</a>
