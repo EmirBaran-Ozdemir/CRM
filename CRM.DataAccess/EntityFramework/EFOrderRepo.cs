@@ -17,7 +17,7 @@ namespace CRM.DataAccess.EntityFramework
 		}
 		public List<Order> GetAllWithSellerInfo(int id)
 		{
-			var order = context.Orders.Include(x => x.Customer).Include(x => x.Product).Include(x=>x.Product.Seller).Include(x => x.Product.Seller!.Company).Include(x => x.Product.ProductType).ToList();
+			var order = context.Orders.Include(x => x.Customer).Include(x => x.Product).Include(x => x.Product.Seller).Include(x => x.Product.Seller!.Company).Include(x => x.Product.ProductType).ToList();
 			return order;
 		}
 	}

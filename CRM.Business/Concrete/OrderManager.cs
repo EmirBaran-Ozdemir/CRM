@@ -1,12 +1,6 @@
 ﻿using CRM.Business.Abstract;
 using CRM.DataAccess.Abstract;
 using CRM.Entity.Concrete;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRM.Business.Concrete
 {
@@ -24,14 +18,12 @@ namespace CRM.Business.Concrete
 				CustomerId = customerId,
 				ProductId = product.Id,
 				OrderDate = DateOnly.FromDateTime(DateTime.Now.Date),
-				CurrentPrice = product.Price
+				CurrentPrice = product.Price,
 			};
+
 			return order;
 		}
-		public Order GetOrder(int customerId)
-		{
-			return _orderDal.GetOrder(customerId);
-		}
+
 		public List<Order> GetAllWithSellerInfo(int id)
 		{
 			return _orderDal.GetAllWithSellerInfo(id);

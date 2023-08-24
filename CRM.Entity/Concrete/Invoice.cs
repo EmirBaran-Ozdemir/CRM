@@ -14,13 +14,16 @@ public partial class Invoice
 	public int UserId { get; set; }
 
 	[Column("excess_amount")]
-	public int? ExcessAmount { get; set; }
+	public float ExcessAmount { get; set; }
 
 	[Column("invoince_start_date")]
 	public DateOnly InvoinceStartDate { get; set; }
 
 	[Column("invoince_end_date")]
 	public DateOnly InvoinceEndDate { get; set; }
+
+	[InverseProperty("Invoice")]
+	public virtual ICollection<OrderInvoiceMap> OrderInvoiceMaps { get; set; } = new List<OrderInvoiceMap>();
 
 	[ForeignKey("UserId")]
 	[InverseProperty("Invoices")]

@@ -31,13 +31,13 @@ public partial class Product
 	public string? Details { get; set; }
 
 	[InverseProperty("Product")]
-	public virtual ICollection<Order>? Orders { get; set; } = new List<Order>();
+	public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
 	[ForeignKey("ProductTypeId")]
 	[InverseProperty("Products")]
-	public virtual ProductType? ProductType { get; set; } = null!;
+	public virtual ProductType ProductType { get; set; } = null!;
 
 	[ForeignKey("SellerId")]
 	[InverseProperty("Products")]
-	public virtual User? Seller { get; set; } = null!;
+	public virtual User Seller { get; set; } = null!;
 }

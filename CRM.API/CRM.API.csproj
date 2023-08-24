@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CRM.Business\CRM.Business.csproj" />
+    <ProjectReference Include="..\CRM.Entity\CRM.Entity.csproj" />
+  </ItemGroup>
+
 </Project>

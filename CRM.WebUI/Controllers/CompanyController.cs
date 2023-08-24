@@ -3,10 +3,8 @@ using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
-using CRM.WebUI.Middleware;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -33,9 +31,9 @@ namespace CRM.WebUI.Controllers
 			CompanyProductsModel model = new CompanyProductsModel();
 			model.Company = _companyManager.GetById(id);
 			List<User> users = _companyManager.GetCompanyEmployees(id);
-			foreach(User user in users)
+			foreach (User user in users)
 			{
-				List<Product> userProducts = _productManager.GetAllProductsWithTypesBySellerId(user.Id); 
+				List<Product> userProducts = _productManager.GetAllProductsWithTypesBySellerId(user.Id);
 				model.Products?.AddRange(userProducts);
 			}
 			return View("CompanyProducts", model);
@@ -46,7 +44,7 @@ namespace CRM.WebUI.Controllers
 			CompanyEmployeesModel model = new CompanyEmployeesModel();
 			model.Company = _companyManager.GetById(id);
 			model.Users = _companyManager.GetUsersWithRolesByCompanyId(id);
-			
+
 			return View("CompanyEmployees", model);
 		}
 

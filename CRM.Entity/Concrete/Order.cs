@@ -27,7 +27,13 @@ public partial class Order
 	public virtual User Customer { get; set; } = null!;
 
 	[InverseProperty("Order")]
-	public virtual ICollection<Membership> Memberships { get; set; } = new List<Membership>();
+	public virtual Lifetime? Lifetime { get; set; }
+
+	[InverseProperty("Order")]
+	public virtual Membership? Membership { get; set; }
+
+	[InverseProperty("Order")]
+	public virtual ICollection<OrderInvoiceMap> OrderInvoiceMaps { get; set; } = new List<OrderInvoiceMap>();
 
 	[ForeignKey("ProductId")]
 	[InverseProperty("Orders")]

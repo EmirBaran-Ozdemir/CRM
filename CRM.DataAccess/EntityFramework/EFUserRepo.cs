@@ -21,7 +21,7 @@ namespace CRM.DataAccess.EntityFramework
 			var values = _context.Users.Include(x => x.Company).Include(x => x.Products).FirstOrDefault(x => x.Id == id);
 			return values!;
 		}
-		public User? LoginUser(User model) => _context.Users.Include(x=>x.Role).FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+		public User? LoginUser(User model) => _context.Users.Include(x => x.Role).FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
 
 		public List<Company> GetCompanies()
 		{

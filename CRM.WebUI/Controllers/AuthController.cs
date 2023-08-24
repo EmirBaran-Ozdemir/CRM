@@ -1,6 +1,7 @@
 ﻿using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
+using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -8,8 +9,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using CRM.DataTypeObjects.Models;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CRM.WebUI.Controllers
 {

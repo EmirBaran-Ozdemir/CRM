@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Text.Json;
 using Serilog;
 using Serilog.Context;
+using System.Net;
 
 namespace CRM.WebUI.Middleware
 {
@@ -27,7 +26,6 @@ namespace CRM.WebUI.Middleware
 				using (LogContext.PushProperty("DateTimeUtc", DateTime.UtcNow))
 				{
 					Log.Error(ex, "Request failure");
-					Log.Warning(ex, ex.Message);
 
 					ProblemDetails problem = setProblem(ex.Code, "Server Error", ex.Message);
 					Log.Fatal(problem.Detail!);
@@ -43,7 +41,6 @@ namespace CRM.WebUI.Middleware
 				using (LogContext.PushProperty("DateTimeUtc", DateTime.UtcNow))
 				{
 					Log.Error(ex, "Request failure");
-					Log.Warning(ex, ex.Message);
 
 					int errCode = 500;
 					ProblemDetails problem = setProblem(errCode, "Server Error", ex.Message);

@@ -13,7 +13,7 @@ namespace CRM.DataAccess.EntityFramework
 		{
 			return context.Products.Include(x => x.ProductType).Where(x => x.ProductTypeId == id).ToList();
 		}
-		
+
 		public Product GetProductWithSellerInfoAndProductTypeById(int id)
 		{
 			return context.Products.Include(x => x.Seller)

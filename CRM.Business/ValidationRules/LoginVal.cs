@@ -2,7 +2,7 @@
 
 namespace CRM.Business.ValidationRules
 {
-    public class LoginVal : GenericVal<LoginModel>
+	public class LoginVal : GenericVal<LoginModel>
 	{
 		public LoginVal()
 		{

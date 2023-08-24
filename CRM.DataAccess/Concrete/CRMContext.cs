@@ -18,9 +18,13 @@ public partial class CRMContext : DbContext
 
 	public virtual DbSet<Invoice> Invoices { get; set; }
 
+	public virtual DbSet<Lifetime> Lifetimes { get; set; }
+
 	public virtual DbSet<Membership> Memberships { get; set; }
 
 	public virtual DbSet<Order> Orders { get; set; }
+
+	public virtual DbSet<OrderInvoiceMap> OrderInvoiceMaps { get; set; }
 
 	public virtual DbSet<Product> Products { get; set; }
 
@@ -54,11 +58,24 @@ public partial class CRMContext : DbContext
 				.HasConstraintName("Invoince_user_id_fkey");
 		});
 
+		modelBuilder.Entity<Lifetime>(entity =>
+		{
+			entity.HasKey(e => e.OrderId).HasName("lifetime_pkey");
+
+			entity.Property(e => e.OrderId).ValueGeneratedNever();
+
+			entity.HasOne(d => d.Order).WithOne(p => p.Lifetime)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("lifetime_order_id_fkey");
+		});
+
 		modelBuilder.Entity<Membership>(entity =>
 		{
-			entity.HasKey(e => e.Id).HasName("membership_pkey");
+			entity.HasKey(e => e.OrderId).HasName("membership_pkey");
 
-			entity.HasOne(d => d.Order).WithMany(p => p.Memberships)
+			entity.Property(e => e.OrderId).ValueGeneratedNever();
+
+			entity.HasOne(d => d.Order).WithOne(p => p.Membership)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("membership_order_id_fkey");
 		});
@@ -76,6 +93,19 @@ public partial class CRMContext : DbContext
 			entity.HasOne(d => d.Product).WithMany(p => p.Orders)
 				.OnDelete(DeleteBehavior.ClientSetNull)
 				.HasConstraintName("order_product_id_fkey");
+		});
+
+		modelBuilder.Entity<OrderInvoiceMap>(entity =>
+		{
+			entity.HasKey(e => e.Id).HasName("orderInvoiceMap_pkey");
+
+			entity.HasOne(d => d.Invoice).WithMany(p => p.OrderInvoiceMaps)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("orderInvoiceMap_invoice_id_fkey");
+
+			entity.HasOne(d => d.Order).WithMany(p => p.OrderInvoiceMaps)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("orderInvoiceMap_order_id_fkey");
 		});
 
 		modelBuilder.Entity<Product>(entity =>

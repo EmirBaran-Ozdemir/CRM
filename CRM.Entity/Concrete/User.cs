@@ -40,11 +40,11 @@ public partial class User
 	public string Email { get; set; } = null!;
 
 	[Column("gender")]
-	public short Gender { get; set; }
+	public short? Gender { get; set; }
 
 	[ForeignKey("CompanyId")]
 	[InverseProperty("Users")]
-	public virtual Company? Company { get; set; }
+	public virtual Company Company { get; set; } = null!;
 
 	[InverseProperty("User")]
 	public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
@@ -57,5 +57,5 @@ public partial class User
 
 	[ForeignKey("RoleId")]
 	[InverseProperty("Users")]
-	public virtual UserRole? Role { get; set; }
+	public virtual UserRole Role { get; set; } = null!;
 }

@@ -2,10 +2,10 @@
 using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
+using CRM.DataTypeObjects.Models;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CRM.DataTypeObjects.Models;
 
 namespace CRM.WebUI.Controllers
 {
@@ -15,9 +15,9 @@ namespace CRM.WebUI.Controllers
 		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
 		readonly UserManager _userManager = new UserManager(new EFUserRepo());
 
-        //[AllowAnonymous]
-		
-        public IActionResult Index()
+		//[AllowAnonymous]
+
+		public IActionResult Index()
 		{
 			var values = _productManager.GetAllWithCompanyAndProductType();
 			ViewBag.IsAuthorized = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("seller");
@@ -36,7 +36,7 @@ namespace CRM.WebUI.Controllers
 		{
 			var license = LicenseGenerator.GenerateLicense();
 
-			while(_productManager.CheckSameLicense(license))
+			while (_productManager.CheckSameLicense(license))
 				license = LicenseGenerator.GenerateLicense();
 
 			model.User = _userManager.GetUserWithCompanyById(int.Parse(HttpContext.User.Identity!.Name!));
