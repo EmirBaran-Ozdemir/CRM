@@ -1,49 +1,60 @@
-﻿using CRM.Business.Concrete;
-
+﻿using CRM.Business.Abstract;
+using CRM.Business.Concrete;
+using CRM.Entity.Concrete;
 
 namespace CRM.API.Concrete
 {
-	public class InvoiceGenerator
+	public interface IInvoiceGenerationService
 	{
-		private UserManager _userManager;
-		private OrderManager _orderManager;
-		private InvoiceManager _invoiceManager;
+		void GenerateInvoices();
+	}
 
-		public InvoiceGenerator(UserManager userManager, OrderManager orderManager, InvoiceManager invoiceManager)
+	public class InvoiceGenerationService : IInvoiceGenerationService
+	{
+		private IUserService _userManager;
+		private IInvoiceService _invoiceManager;
+
+		public InvoiceGenerationService(IUserService userManager, IInvoiceService invoiceManager)
 		{
 			_userManager = userManager;
-			_orderManager = orderManager;
 			_invoiceManager = invoiceManager;
 		}
 
-		//public void GenerateInvoices()
-		//{
-		//	List<User> userList = _userManager.GetListAll();
+		public void GenerateInvoices()
+		{
 
-		//	foreach (User user in userList)
-		//	{
-		//		if (user.Orders.Count != 0)
-		//		{
-		//			continue;
-		//		}
-		//		float price = 0;
-		//		foreach (Order order in user.Orders)
-		//		{
-		//			if (order.Product.ProductTypeId == 1 && order.Lifetimes!.Collected) // If product type is lifetime license
-		//			{
-		//				price += order.Product.Price;
-		//			}
+			var usersWithOrders = _userManager.GetAllUsersWithOrders();
 
-		//			new Invoice
-		//			{
-		//				ExcessAmount = user.Quota - price,
-		//				InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
-		//				InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now),
+			foreach (User user in usersWithOrders)
+			{
+				float price = 0;
+				foreach (Order order in user.Orders)
+				{
+					if (order.Lifetime == null)
+					{
+						continue;
+					}
+					if (order.Lifetime!.PaymentCollected)
+					{
+						price += order.Product.Price;
+					}
+					Invoice invoice = new Invoice
+					{
+						ExcessAmount = user.Quota - price,
+						InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
+						InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now),
+					};
+					_invoiceManager.Add(invoice);
+					invoice.OrderInvoiceMaps.Add(new OrderInvoiceMap
+					{
+						InvoiceId = invoice.Id,
+						OrderId = order.Id,
+					});
+					_invoiceManager.Update(invoice);
 
-		//			};
-		//		}
-		//	}
-		//	Console.WriteLine("Invoice generated");
-		//}
+				}
+			}
+			Console.WriteLine("Invoice generated");
+		}
 	}
 }

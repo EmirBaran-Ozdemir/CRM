@@ -12,7 +12,6 @@ namespace CRM.Business.Concrete
 		{
 			_companyDal = companyDal;
 		}
-
 		public List<User> GetCompanyEmployees(int id)
 		{
 			return _companyDal.GetCompanyEmployees(id);

@@ -1,4 +1,5 @@
 ﻿using CRM.API.Concrete;
+using CRM.Business.Abstract;
 using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
@@ -12,11 +13,15 @@ namespace CRM.WebUI.Controllers
 	public class ProductController : Controller
 	{
 
-		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
-		readonly UserManager _userManager = new UserManager(new EFUserRepo());
+		readonly IProductService _productManager;
+		readonly IUserService _userManager;
 
-		//[AllowAnonymous]
-
+		public ProductController(IProductService productService, IUserService userService)
+		{
+			_productManager = productService;
+			_userManager = userService;
+		}
+		[AllowAnonymous]
 		public IActionResult Index()
 		{
 			var values = _productManager.GetAllWithCompanyAndProductType();

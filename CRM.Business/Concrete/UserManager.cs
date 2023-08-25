@@ -12,6 +12,10 @@ namespace CRM.Business.Concrete
 			_userDal = userDal;
 		}
 
+		public List<User> GetAllUsersWithOrders()
+		{
+			return _userDal.GetAllUsersWithOrders();
+		}
 		public List<Company> GetCompanies()
 		{
 			return _userDal.GetCompanies();

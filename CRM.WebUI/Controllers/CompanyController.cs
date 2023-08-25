@@ -1,4 +1,5 @@
-﻿using CRM.Business.Concrete;
+﻿using CRM.Business.Abstract;
+using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
@@ -14,8 +15,14 @@ namespace CRM.WebUI.Controllers
 
 	public class CompanyController : Controller
 	{
-		readonly CompanyManager _companyManager = new CompanyManager(new EFCompanyRepo());
-		readonly ProductManager _productManager = new ProductManager(new EFProductRepo());
+		readonly ICompanyService _companyManager;
+		readonly IProductService _productManager;
+
+		public CompanyController(ICompanyService companyManager, IProductService productManager)
+		{
+			_companyManager = companyManager;
+			_productManager = productManager;
+		}
 
 		public IActionResult Index()
 		{

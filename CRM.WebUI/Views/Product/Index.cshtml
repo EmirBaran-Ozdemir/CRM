@@ -14,6 +14,10 @@
 	<link rel="stylesheet" type="text/css" href="/css/utils.css">
 	<link rel="stylesheet" type="text/css" href="/css/style-table.css">
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/monthSelect/style.css" />
+
+
 </head>
 <body>
 	<h3 style="text-align:center">Products</h3>
@@ -38,16 +42,56 @@
 							<td class="centered">@product.Price</td>
 							<td class="centered">@product.ProductType!.Name</td>
 							<td class="centered"><a href="/Company/Products/@product.Seller!.CompanyId">@product.Seller!.Company!.Name</a></td>
-							@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+							@if (product.ProductTypeId == 1)
+							{
+
+
+								@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+								{
+									<td>
+										<input type="hidden" name="product.Id" value="@product.Id" />
+										<input type="hidden" name="product.Price" value="@product.Price" />
+										<input type="hidden" name="product.ProductTypeId" value="@product.ProductTypeId" />
+										<button type="submit" class="load btn_primary mt-3 mb-3">
+											Buy
+										</button>
+									</td>
+								}
+							}
+							else
 							{
 								<td>
-									<input type="hidden" name="product.Id" value="@product.Id"/>
-									<input type="hidden" name="product.Price" value="@product.Price" />
-									<input type="hidden" name="product.ProductTypeId" value="@product.ProductTypeId" />
-									<button type="submit" class="btn_primary mt-3 mb-3" >
+									<button class="btn_primary " data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="endDate">
 										Buy
 									</button>
+
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
+												{
+													<div class="modal-header">
+														<h1 class="modal-title fs-5" id="exampleModalLabel">Choose membership end date for @product.Name</h1>
+													</div>
+													<div style="display:flex;justify-content:center" class="modal-body">
+
+														<input type="hidden" name="product.Id" value="@product.Id" />
+														<input type="hidden" name="product.Price" value="@product.Price" />
+														<input type="hidden" name="product.ProductTypeId" value="@product.ProductTypeId" />
+
+														<input style="text-align:center;border-radius:30px;padding:12px;width:60%" type="text" name="endDate" id="datetime" placeholder="End Date" />
+													</div>
+													<div style="justify-content:center" class="modal-footer">
+														<button type="submit" class="btn_primary mt-3" style="width:80%;font-size:15px">
+															Buy
+														</button>
+													</div>
+												}
+											</div>
+										</div>
+									</div>
 								</td>
+
 							}
 						</tr>
 					}
@@ -67,6 +111,21 @@
 	{
 		<h3 style="text-align:center">This company has no products available.</h3>
 	}
-
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/monthSelect/index.js"></script>
+	<script>
+		flatpickr("#datetime", {
+			minDate: "today",
+					
+			plugins: [
+				new monthSelectPlugin({
+					shorthand: true, 
+					dateFormat: "M/Y", 
+					altFormat: "F Y", 
+				})
+			]
+			
+		});
+	</script>
 </body>
 </html>

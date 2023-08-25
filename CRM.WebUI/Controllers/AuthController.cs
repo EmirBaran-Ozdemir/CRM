@@ -1,4 +1,5 @@
-﻿using CRM.Business.Concrete;
+﻿using CRM.Business.Abstract;
+using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
@@ -15,7 +16,12 @@ namespace CRM.WebUI.Controllers
 	[AllowAnonymous]
 	public class AuthController : Controller
 	{
-		readonly UserManager _userManager = new UserManager(new EFUserRepo());
+		readonly IUserService _userManager;
+
+		public AuthController(IUserService userManager)
+		{
+			_userManager = userManager;
+		}
 
 		[HttpGet]
 		[Authorize]

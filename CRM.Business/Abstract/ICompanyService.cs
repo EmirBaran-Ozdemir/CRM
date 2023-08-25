@@ -1,4 +1,5 @@
-﻿using CRM.Entity.Concrete;
+﻿using CRM.DataAccess.Abstract;
+using CRM.Entity.Concrete;
 
 namespace CRM.Business.Abstract
 {
@@ -6,5 +7,6 @@ namespace CRM.Business.Abstract
 	{
 		public List<User> GetCompanyEmployees(int id);
 		List<User> GetUsersWithRolesByCompanyId(int id);
+		public bool CheckCompany(string name);
 	}
 }

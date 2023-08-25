@@ -8,7 +8,7 @@
 			baseContent.style.display = 'block';
 
 			var dynamicLinks = document.querySelectorAll('.dynamic-link');
-			var buttons = document.querySelectorAll('button');
+			var buttons = document.querySelectorAll('.load');
 			var inputFields = document.querySelectorAll('.form-control');
 
 			dynamicLinks.forEach(function (link) {

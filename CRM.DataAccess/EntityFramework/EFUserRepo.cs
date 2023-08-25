@@ -11,6 +11,11 @@ namespace CRM.DataAccess.EntityFramework
 	{
 		CRMContext _context = new CRMContext();
 
+		public List<User> GetAllUsersWithOrders()
+		{
+			var values = _context.Users.Include(x => x.Orders).ToList();
+			return values;
+		}
 		public User GetUserWithCompanyById(int id)
 		{
 			var values = _context.Users.Include(x => x.Company).FirstOrDefault(x => x.Id == id);

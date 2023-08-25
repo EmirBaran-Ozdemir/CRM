@@ -9,6 +9,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Serilog;
+using Hangfire;
+using Hangfire.PostgreSql;
+using CRM.API.Concrete;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Filters;
+
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,29 +55,32 @@ builder.Services.AddMvc(config =>
 builder.Services.AddControllersWithViews();
 
 // Controller Services
-builder.Services.AddTransient<ICompanyService, CompanyManager>();
-builder.Services.AddTransient<ICompanyDal, EFCompanyRepo>();
+builder.Services.AddSingleton<ICompanyService, CompanyManager>();
+builder.Services.AddSingleton<ICompanyDal, EFCompanyRepo>();
 
-builder.Services.AddTransient<IInvoiceService, InvoiceManager>();
-builder.Services.AddTransient<IInvoiceDal, EFInvoiceRepo>();
+builder.Services.AddSingleton<IInvoiceService, InvoiceManager>();
+builder.Services.AddSingleton<IInvoiceDal, EFInvoiceRepo>();
 
-builder.Services.AddTransient<IMembershipService, MembershipManager>();
-builder.Services.AddTransient<IMembershipDal, EFMembershipRepo>();
+builder.Services.AddSingleton<IMembershipService, MembershipManager>();
+builder.Services.AddSingleton<IMembershipDal, EFMembershipRepo>();
 
-builder.Services.AddTransient<IOrderService, OrderManager>();
-builder.Services.AddTransient<IOrderDal, EFOrderRepo>();
+builder.Services.AddSingleton<IOrderService, OrderManager>();
+builder.Services.AddSingleton<IOrderDal, EFOrderRepo>();
 
-builder.Services.AddTransient<IProductService, ProductManager>();
-builder.Services.AddTransient<IProductDal, EFProductRepo>();
+builder.Services.AddSingleton<IProductService, ProductManager>();
+builder.Services.AddSingleton<IProductDal, EFProductRepo>();
 
-builder.Services.AddTransient<IProductTypeService, ProductTypeManager>();
-builder.Services.AddTransient<IProductTypeDal, EFProductTypeRepo>();
+builder.Services.AddSingleton<IProductTypeService, ProductTypeManager>();
+builder.Services.AddSingleton<IProductTypeDal, EFProductTypeRepo>();
 
-builder.Services.AddTransient<IUserService, UserManager>();
-builder.Services.AddTransient<IUserDal, EFUserRepo>();
+builder.Services.AddSingleton<IUserService, UserManager>();
+builder.Services.AddSingleton<IUserDal, EFUserRepo>();
 
-builder.Services.AddTransient<IUserRoleService, UserRoleManager>();
-builder.Services.AddTransient<IUserRoleDal, EFUserRoleRepo>();
+builder.Services.AddSingleton<IUserRoleService, UserRoleManager>();
+builder.Services.AddSingleton<IUserRoleDal, EFUserRoleRepo>();
+
+builder.Services.AddScoped<IInvoiceGenerationService, InvoiceGenerationService>();
+
 
 // Validators
 builder.Services.AddValidatorsFromAssemblyContaining<AddCompanyVal>();
@@ -83,35 +92,24 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterVal>();
 builder.Services.AddTransient<NotFoundPageHandlerMiddleware>();
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
+string connectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=postgre;Database=CRM;";
+builder.Services.AddHangfire(config =>
+{
+	config.UsePostgreSqlStorage(connectionString);
+});
+
+builder.Services.AddHangfireServer();
+
 //. Application
 var app = builder.Build();
 // Log
 app.UseSerilogRequestLogging();
 Log.Debug("App build with success");
 
-//string connectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=postgre;Database=CRM;";
-//builder.Services.AddHangfire(config =>
-//{
-//	config.UsePostgreSqlStorage(connectionString);
-//});
-//app.UseHangfireDashboard();
-
-
-UserManager userManager = new UserManager(new EFUserRepo());
-OrderManager orderManager = new OrderManager(new EFOrderRepo());
-InvoiceManager ýnvoiceManager = new InvoiceManager(new EFInvoiceRepo());
-
-
-//InvoiceGenerator invoiceGenerator = new InvoiceGenerator(userManager, orderManager, ýnvoiceManager);
-//RecurringJob.AddOrUpdate<InvoiceGenerator>(
-//	"monthly_invoice_generation",
-//	invoiceGenerator => invoiceGenerator.GenerateInvoices(),
-//	Cron.Minutely);
-
-
 //app.UseMiddleware<ViewExistenceMiddleware>();
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseMiddleware<NotFoundPageHandlerMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -121,6 +119,22 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+//. Hangfire Configurations
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+
+});
+using (var scope = app.Services.CreateScope())
+{
+	var invoiceGenerationService = scope.ServiceProvider.GetRequiredService<IInvoiceGenerationService>();
+	var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+
+	recurringJobManager.AddOrUpdate(
+		"monthly_invoice_generation",
+		() => invoiceGenerationService.GenerateInvoices(),
+		Cron.Minutely);
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

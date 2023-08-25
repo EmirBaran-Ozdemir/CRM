@@ -2,7 +2,7 @@
 
 namespace CRM.DataAccess.Abstract
 {
-	internal interface ILifetimeDal : IGenericDal<Lifetime>
+	public interface ILifetimeDal : IGenericDal<Lifetime>
 	{
 	}
 }
