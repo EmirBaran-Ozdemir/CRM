@@ -14,6 +14,7 @@ using Hangfire.PostgreSql;
 using CRM.API.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
+using CRM.WebUI.PackageConf;
 
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -55,29 +56,29 @@ builder.Services.AddMvc(config =>
 builder.Services.AddControllersWithViews();
 
 // Controller Services
-builder.Services.AddSingleton<ICompanyService, CompanyManager>();
-builder.Services.AddSingleton<ICompanyDal, EFCompanyRepo>();
+builder.Services.AddScoped<ICompanyService, CompanyManager>();
+builder.Services.AddScoped<ICompanyDal, EFCompanyRepo>();
 
-builder.Services.AddSingleton<IInvoiceService, InvoiceManager>();
-builder.Services.AddSingleton<IInvoiceDal, EFInvoiceRepo>();
+builder.Services.AddScoped<IInvoiceService, InvoiceManager>();
+builder.Services.AddScoped<IInvoiceDal, EFInvoiceRepo>();
 
-builder.Services.AddSingleton<IMembershipService, MembershipManager>();
-builder.Services.AddSingleton<IMembershipDal, EFMembershipRepo>();
+builder.Services.AddScoped<IMembershipService, MembershipManager>();
+builder.Services.AddScoped<IMembershipDal, EFMembershipRepo>();
 
-builder.Services.AddSingleton<IOrderService, OrderManager>();
-builder.Services.AddSingleton<IOrderDal, EFOrderRepo>();
+builder.Services.AddScoped<IOrderService, OrderManager>();
+builder.Services.AddScoped<IOrderDal, EFOrderRepo>();
 
-builder.Services.AddSingleton<IProductService, ProductManager>();
-builder.Services.AddSingleton<IProductDal, EFProductRepo>();
+builder.Services.AddScoped<IProductService, ProductManager>();
+builder.Services.AddScoped<IProductDal, EFProductRepo>();
 
-builder.Services.AddSingleton<IProductTypeService, ProductTypeManager>();
-builder.Services.AddSingleton<IProductTypeDal, EFProductTypeRepo>();
+builder.Services.AddScoped<IProductTypeService, ProductTypeManager>();
+builder.Services.AddScoped<IProductTypeDal, EFProductTypeRepo>();
 
-builder.Services.AddSingleton<IUserService, UserManager>();
-builder.Services.AddSingleton<IUserDal, EFUserRepo>();
+builder.Services.AddScoped<IUserService, UserManager>();
+builder.Services.AddScoped<IUserDal, EFUserRepo>();
 
-builder.Services.AddSingleton<IUserRoleService, UserRoleManager>();
-builder.Services.AddSingleton<IUserRoleDal, EFUserRoleRepo>();
+builder.Services.AddScoped<IUserRoleService, UserRoleManager>();
+builder.Services.AddScoped<IUserRoleDal, EFUserRoleRepo>();
 
 builder.Services.AddScoped<IInvoiceGenerationService, InvoiceGenerationService>();
 
@@ -93,11 +94,10 @@ builder.Services.AddTransient<NotFoundPageHandlerMiddleware>();
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
 string connectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=postgre;Database=CRM;";
-builder.Services.AddHangfire(config =>
-{
-	config.UsePostgreSqlStorage(connectionString);
-});
+GlobalConfiguration.Configuration.UsePostgreSqlStorage(connectionString);
 
+builder.Services.AddHangfire(configuration => configuration
+	.UsePostgreSqlStorage(connectionString));
 builder.Services.AddHangfireServer();
 
 //. Application
@@ -120,22 +120,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-//. Hangfire Configurations
-app.UseHangfireDashboard("/hangfire", new DashboardOptions
-{
-
-});
-using (var scope = app.Services.CreateScope())
-{
-	var invoiceGenerationService = scope.ServiceProvider.GetRequiredService<IInvoiceGenerationService>();
-	var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-
-	recurringJobManager.AddOrUpdate(
-		"monthly_invoice_generation",
-		() => invoiceGenerationService.GenerateInvoices(),
-		Cron.Minutely);
-}
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -144,6 +128,10 @@ app.UseStaticFiles();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//. Hangfire Configurations
+var jobScheduler = HangfireJobScheduler.GetInstance(app);
+jobScheduler.ScheduleJobs();
 
 app.Run();
 Log.Debug("Terminating...");

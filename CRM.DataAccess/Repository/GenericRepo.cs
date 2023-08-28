@@ -27,7 +27,7 @@ namespace CRM.DataAccess.Repository
 
 		public T GetById(int id)
 		{
-			return context.Set<T>().Find(id);
+			return context.Set<T>().Find(id)!;
 		}
 
 		public List<T> GetListAll(Expression<Func<T, bool>> filter)
@@ -39,6 +39,12 @@ namespace CRM.DataAccess.Repository
 		{
 			context.Update(t);
 			context.SaveChanges();
+		}
+
+		public T AddAndGet(T t)
+		{
+			Add(t);
+			return t;
 		}
 	}
 }

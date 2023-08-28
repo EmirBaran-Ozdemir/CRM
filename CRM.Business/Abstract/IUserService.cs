@@ -7,6 +7,7 @@ namespace CRM.Business.Abstract
 	{
 		public List<Company> GetCompanies();
 		public List<User> GetAllUsersWithOrders();
+		public List<User> GetAllUsersWithOrdersAndTypes();
 		public User GetUserWithCompanyById(int id);
 
 		public User GetUserWithCompanyAndProductsById(int id);

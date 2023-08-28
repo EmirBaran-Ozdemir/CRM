@@ -6,6 +6,7 @@ namespace CRM.DataAccess.Abstract
 	{
 		List<T> GetListAll();
 		void Add(T t);
+		T AddAndGet(T t);
 		void Update(T t);
 		void Delete(T t);
 		T GetById(int id);

@@ -35,5 +35,10 @@ namespace CRM.Business.Concrete
 		{
 			return _userDal.LoginUser(model);
 		}
+
+		public List<User> GetAllUsersWithOrdersAndTypes()
+		{
+			return _userDal.GetAllUsersWithOrdersAndTypes();
+		}
 	}
 }

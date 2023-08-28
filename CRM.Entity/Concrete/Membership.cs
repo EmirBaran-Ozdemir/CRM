@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Entity.Concrete;
 
@@ -8,17 +10,17 @@ namespace CRM.Entity.Concrete;
 [Index("OrderId", Name = "membership_order_id_key", IsUnique = true)]
 public partial class Membership
 {
-	[Key]
-	[Column("order_id")]
-	public int OrderId { get; set; }
+    [Key]
+    [Column("order_id")]
+    public int OrderId { get; set; }
 
-	[Column("start_date")]
-	public DateOnly StartDate { get; set; }
+    [Column("start_date")]
+    public DateOnly StartDate { get; set; }
 
-	[Column("end_date")]
-	public DateOnly EndDate { get; set; }
+    [Column("end_date")]
+    public DateOnly EndDate { get; set; }
 
-	[ForeignKey("OrderId")]
-	[InverseProperty("Membership")]
-	public virtual Order Order { get; set; } = null!;
+    [ForeignKey("OrderId")]
+    [InverseProperty("Membership")]
+    public virtual Order Order { get; set; } = null!;
 }

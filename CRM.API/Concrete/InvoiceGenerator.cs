@@ -1,6 +1,8 @@
 ﻿using CRM.Business.Abstract;
 using CRM.Business.Concrete;
 using CRM.Entity.Concrete;
+using System.Linq;
+
 
 namespace CRM.API.Concrete
 {
@@ -23,36 +25,34 @@ namespace CRM.API.Concrete
 		public void GenerateInvoices()
 		{
 
-			var usersWithOrders = _userManager.GetAllUsersWithOrders();
+			var usersWithOrders = _userManager.GetAllUsersWithOrdersAndTypes();
 
 			foreach (User user in usersWithOrders)
 			{
 				float price = 0;
-				foreach (Order order in user.Orders)
+				foreach(Order order in user.Orders)
 				{
 					if (order.Lifetime == null)
-					{
 						continue;
-					}
-					if (order.Lifetime!.PaymentCollected)
-					{
-						price += order.Product.Price;
-					}
-					Invoice invoice = new Invoice
-					{
-						ExcessAmount = user.Quota - price,
-						InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
-						InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now),
-					};
-					_invoiceManager.Add(invoice);
-					invoice.OrderInvoiceMaps.Add(new OrderInvoiceMap
-					{
-						InvoiceId = invoice.Id,
-						OrderId = order.Id,
-					});
-					_invoiceManager.Update(invoice);
-
+					if(order.Lifetime.PaymentCollected == true)
+						continue;
+					price += order.CurrentPrice;
 				}
+				Invoice invoice = new Invoice
+				{
+					UserId = user.Id,
+					ExcessAmount = user.Quota - price,
+					InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
+					InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now)
+				};
+				invoice = _invoiceManager.AddAndGet(invoice);
+
+				foreach (Order order in user.Orders)
+				{
+					order.InvoiceId = invoice.Id;
+				}
+				_invoiceManager.Update(invoice);
+
 			}
 			Console.WriteLine("Invoice generated");
 		}

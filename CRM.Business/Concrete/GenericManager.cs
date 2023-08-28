@@ -32,5 +32,11 @@ namespace CRM.Business.Concrete
 		{
 			repo.Update(t);
 		}
+
+		public T AddAndGet(T t)
+		{
+			repo.AddAndGet(t);
+			return t;
+		}
 	}
 }

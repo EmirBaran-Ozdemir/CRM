@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Entity.Concrete;
 
@@ -8,14 +10,14 @@ namespace CRM.Entity.Concrete;
 [Index("OrderId", Name = "lifetime_order_id_key", IsUnique = true)]
 public partial class Lifetime
 {
-	[Key]
-	[Column("order_id")]
-	public int OrderId { get; set; }
+    [Key]
+    [Column("order_id")]
+    public int OrderId { get; set; }
 
-	[Column("payment_collected")]
-	public bool PaymentCollected { get; set; }
+    [Column("payment_collected")]
+    public bool PaymentCollected { get; set; }
 
-	[ForeignKey("OrderId")]
-	[InverseProperty("Lifetime")]
-	public virtual Order Order { get; set; } = null!;
+    [ForeignKey("OrderId")]
+    [InverseProperty("Lifetime")]
+    public virtual Order Order { get; set; } = null!;
 }
