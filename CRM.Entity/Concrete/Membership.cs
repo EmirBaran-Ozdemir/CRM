@@ -20,6 +20,9 @@ public partial class Membership
     [Column("end_date")]
     public DateOnly EndDate { get; set; }
 
+    [Column("payment_collected")]
+    public bool PaymentCollected { get; set; }
+
     [ForeignKey("OrderId")]
     [InverseProperty("Membership")]
     public virtual Order Order { get; set; } = null!;

@@ -21,7 +21,10 @@ namespace CRM.DataAccess.EntityFramework
 		{
 			var values = _context.Users
 				.Include(u => u.Orders)
-				.ThenInclude(o => o.Lifetime).ToList();
+					.ThenInclude(o => o.Lifetime)
+				.Include(u => u.Orders)
+					.ThenInclude(o => o.Membership)
+				.ToList();
 			return values;
 		}
 		public User GetUserWithCompanyById(int id)

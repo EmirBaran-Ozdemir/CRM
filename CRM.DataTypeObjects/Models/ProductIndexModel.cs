@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CRM.DataTypeObjects.Models
 {
-	public class CreateOrderModel
+	public class ProductIndexModel
 	{
-		public Product? Product { get; set; }
-		public String? endDate { get; set; } = null;
+		public CreateOrderModel CreateOrderModel { get; set; } = null!;
+		public List<Product> Products { get; set; } = null!;
 	}
 }

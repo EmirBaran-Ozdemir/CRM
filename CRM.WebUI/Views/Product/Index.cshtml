@@ -1,10 +1,9 @@
-﻿@model List<Product>
+﻿@model ProductIndexModel
 
 @{
 	Layout = "_layout";
 	ViewData["Title"] = "Products";
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +20,7 @@
 </head>
 <body>
 	<h3 style="text-align:center">Products</h3>
-	@if (Model.Count > 0)
+	@if (Model.Products.Count > 0)
 	{
 		<div style="display:flex;justify-content:center">
 			<table>
@@ -35,7 +34,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (Product product in Model)
+					@foreach (Product product in Model.Products)
 					{
 						<tr>
 							<td class="centered"><a href="/Product/Product/@product.Id">@product.Name</a></td>
@@ -44,19 +43,16 @@
 							<td class="centered"><a href="/Company/Products/@product.Seller!.CompanyId">@product.Seller!.Company!.Name</a></td>
 							@if (product.ProductTypeId == 1)
 							{
-
-
-								@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
-								{
-									<td>
-										<input type="hidden" name="product.Id" value="@product.Id" />
-										<input type="hidden" name="product.Price" value="@product.Price" />
-										<input type="hidden" name="product.ProductTypeId" value="@product.ProductTypeId" />
+								<td>
+									<form method="post" asp-controller="Order" asp-action="CreateOrder">
+										<input type="hidden" name="CreateOrderModel.Product.Id" value="@product.Id" />
+										<input type="hidden" name="CreateOrderModel.Product.Price" value="@product.Price" />
+										<input type="hidden" name="CreateOrderModel.Product.ProductTypeId" value="@product.ProductTypeId" />
 										<button type="submit" class="load btn_primary mt-3 mb-3">
 											Buy
 										</button>
-									</td>
-								}
+									</form>
+								</td>
 							}
 							else
 							{
@@ -68,25 +64,28 @@
 									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog">
 											<div class="modal-content">
-												@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post))
-												{
+												<form method="post" asp-controller="Order" asp-action="CreateOrder">
 													<div class="modal-header">
-														<h1 class="modal-title fs-5" id="exampleModalLabel">Choose membership end date for @product.Name</h1>
+														<h1 class="modal-title fs-5" id="exampleModalLabel">Choose membership end date for @Model.Products.FirstOrDefault()?.Name</h1>
 													</div>
 													<div style="display:flex;justify-content:center" class="modal-body">
 
-														<input type="hidden" name="product.Id" value="@product.Id" />
-														<input type="hidden" name="product.Price" value="@product.Price" />
-														<input type="hidden" name="product.ProductTypeId" value="@product.ProductTypeId" />
+														<input type="hidden" name="CreateOrderModel.Product.Id" value="@product.Id" />
+														<input type="hidden" name="CreateOrderModel.Product.Price" value="@product.Price" />
+														<input type="hidden" name="CreateOrderModel.Product.ProductTypeId" value="@product.ProductTypeId" />
+														<input style="text-align:center;border-radius:30px;padding:12px;width:60%" type="text" id="datetime" placeholder="End Date" />
+														<input type="hidden" name="CreateOrderModel.endDate" id="EndDateFormatted" />
 
-														<input style="text-align:center;border-radius:30px;padding:12px;width:60%" type="text" name="endDate" id="datetime" placeholder="End Date" />
 													</div>
 													<div style="justify-content:center" class="modal-footer">
 														<button type="submit" class="btn_primary mt-3" style="width:80%;font-size:15px">
 															Buy
 														</button>
+
 													</div>
-												}
+												</form>
+												
+
 											</div>
 										</div>
 									</div>
@@ -116,15 +115,16 @@
 	<script>
 		flatpickr("#datetime", {
 			minDate: "today",
-					
 			plugins: [
 				new monthSelectPlugin({
-					shorthand: true, 
-					dateFormat: "M/Y", 
-					altFormat: "F Y", 
+					shorthand: true,
+					dateFormat: "F/Y",
+					altFormat: "F Y",
 				})
-			]
-			
+			],
+			onChange: function (selectedDates, dateStr) {
+				document.getElementById("EndDateFormatted").value = dateStr;
+			}
 		});
 	</script>
 </body>

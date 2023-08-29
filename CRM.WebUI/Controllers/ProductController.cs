@@ -7,6 +7,7 @@ using CRM.DataTypeObjects.Models;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.WebUI.Controllers
 {
@@ -24,11 +25,15 @@ namespace CRM.WebUI.Controllers
 		[AllowAnonymous]
 		public IActionResult Index()
 		{
-			var values = _productManager.GetAllWithCompanyAndProductType();
+			var model = _productManager.GetAllWithCompanyAndProductType();
 			ViewBag.IsAuthorized = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("seller");
 			ViewBag.ProcessStatus = TempData.ContainsKey("ProcessStatus") && (bool)TempData["ProcessStatus"]!;
 			ViewBag.ProcessMessage = TempData["ProcessMessage"] as string;
-			return View(values);
+			ProductIndexModel fullModel = new ProductIndexModel();
+			fullModel.Products = model;
+			fullModel.CreateOrderModel = new CreateOrderModel();
+
+			return View(fullModel);
 		}
 		[Authorize(Policy = "Seller")]
 		public IActionResult AddProduct()

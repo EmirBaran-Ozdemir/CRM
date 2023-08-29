@@ -15,6 +15,7 @@ using CRM.API.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using CRM.WebUI.PackageConf;
+using Microsoft.Extensions.Configuration;
 
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -93,6 +94,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterVal>();
 builder.Services.AddTransient<NotFoundPageHandlerMiddleware>();
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
+builder.Services.AddSingleton<HangfireJobScheduler>();
+
 string connectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=postgre;Database=CRM;";
 GlobalConfiguration.Configuration.UsePostgreSqlStorage(connectionString);
 
@@ -130,7 +133,7 @@ app.MapControllerRoute(
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //. Hangfire Configurations
-var jobScheduler = HangfireJobScheduler.GetInstance(app);
+var jobScheduler = app.Services.GetRequiredService<HangfireJobScheduler>();
 jobScheduler.ScheduleJobs();
 
 app.Run();
