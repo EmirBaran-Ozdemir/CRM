@@ -9,7 +9,7 @@ namespace CRM.Business.Concrete
 	public class ProductManager : GenericManager<Product>, IProductService
 	{
 		IProductDal _productDal;
-		public ProductManager(GenericRepo<Product> repo, IProductDal productDal) 
+		public ProductManager(GenericRepo<Product> repo, IProductDal productDal)
 			: base(repo)
 		{
 			_productDal = productDal;

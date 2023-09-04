@@ -1,7 +1,5 @@
 ﻿using CRM.Business.Abstract;
-using CRM.DataAccess.Concrete;
 using CRM.Entity.Concrete;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 
@@ -69,7 +67,7 @@ namespace CRM.API.Concrete
 				Log.Information("Set payment status to not paid");
 			}
 			else
-				Log.Information($"{order.Product.Name}'s membership has finished");
+				Log.Information($"Order's membership has finished");
 		}
 
 		private float GetPayment<T>(Order order, Func<Order, T?> propertyAccessor) where T : class

@@ -1,7 +1,5 @@
 ﻿using CRM.Business.Abstract;
-using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
-using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
 using FluentValidation.Results;

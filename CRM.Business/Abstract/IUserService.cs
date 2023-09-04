@@ -1,5 +1,4 @@
 ﻿using CRM.Entity.Concrete;
-using Microsoft.Extensions.Configuration;
 
 namespace CRM.Business.Abstract
 {

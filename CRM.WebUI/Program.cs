@@ -1,23 +1,20 @@
+using CRM.API.Concrete;
 using CRM.Business.Abstract;
 using CRM.Business.Concrete;
 using CRM.Business.ValidationRules;
 using CRM.DataAccess.Abstract;
+using CRM.DataAccess.Concrete;
 using CRM.DataAccess.EntityFramework;
+using CRM.DataAccess.Repository;
 using CRM.WebUI.Middleware;
+using CRM.WebUI.PackageConf;
 using FluentValidation;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Serilog;
-using Hangfire;
-using Hangfire.PostgreSql;
-using CRM.API.Concrete;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Filters;
-using CRM.WebUI.PackageConf;
-using Microsoft.Extensions.Configuration;
-using CRM.DataAccess.Concrete;
-using CRM.DataAccess.Repository;
 
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);

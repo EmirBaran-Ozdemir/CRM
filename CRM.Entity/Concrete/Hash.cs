@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Entity.Concrete;
 
@@ -11,22 +9,22 @@ namespace CRM.Entity.Concrete;
 [Index("Expireat", Name = "ix_hangfire_hash_expireat")]
 public partial class Hash
 {
-    [Key]
-    [Column("id")]
-    public long Id { get; set; }
+	[Key]
+	[Column("id")]
+	public long Id { get; set; }
 
-    [Column("key")]
-    public string Key { get; set; } = null!;
+	[Column("key")]
+	public string Key { get; set; } = null!;
 
-    [Column("field")]
-    public string Field { get; set; } = null!;
+	[Column("field")]
+	public string Field { get; set; } = null!;
 
-    [Column("value")]
-    public string? Value { get; set; }
+	[Column("value")]
+	public string? Value { get; set; }
 
-    [Column("expireat")]
-    public DateTime? Expireat { get; set; }
+	[Column("expireat")]
+	public DateTime? Expireat { get; set; }
 
-    [Column("updatecount")]
-    public int Updatecount { get; set; }
+	[Column("updatecount")]
+	public int Updatecount { get; set; }
 }

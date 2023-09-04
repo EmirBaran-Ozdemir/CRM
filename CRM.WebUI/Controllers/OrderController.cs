@@ -1,11 +1,8 @@
 ﻿using CRM.API.Concrete;
 using CRM.Business.Abstract;
-using CRM.Business.Concrete;
-using CRM.DataAccess.EntityFramework;
 using CRM.DataTypeObjects.Models;
 using CRM.Entity.Concrete;
 using CRM.WebUI.PackageConf;
-using Hangfire.Server;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +49,7 @@ namespace CRM.WebUI.Controllers
 				DateOnly modifiedEndDate = new DateOnly(initialEndDate.Year, initialEndDate.Month, DateTime.Now.Day);
 				GenerateMembershipOrder(order, DateOnly.FromDateTime(DateTime.Now.Date), modifiedEndDate);
 			}
-
+			order.Product = null!;
 			_manager.Update(order);
 
 			TempData["ProcessStatus"] = true;

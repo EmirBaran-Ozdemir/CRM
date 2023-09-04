@@ -1,5 +1,4 @@
-﻿using CRM.DataAccess.Abstract;
-using CRM.Entity.Concrete;
+﻿using CRM.Entity.Concrete;
 
 namespace CRM.Business.Abstract
 {

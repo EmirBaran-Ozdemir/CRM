@@ -16,8 +16,8 @@ namespace CRM.DataAccess.EntityFramework
 		public List<Invoice> GetInvoicesWithOrdersAndProductsByUserId(int id)
 		{
 			List<Invoice> invoices = _context.Invoices
-				.Include(i => i.Orders) 
-				.ThenInclude(o => o.Product) 
+				.Include(i => i.Orders)
+				.ThenInclude(o => o.Product)
 				.Where(x => x.UserId == id)
 				.ToList();
 

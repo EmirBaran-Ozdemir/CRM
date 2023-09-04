@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Entity.Concrete;
 
@@ -12,22 +10,22 @@ namespace CRM.Entity.Concrete;
 [Index("Key", "Value", Name = "set_key_value_key", IsUnique = true)]
 public partial class Set
 {
-    [Key]
-    [Column("id")]
-    public long Id { get; set; }
+	[Key]
+	[Column("id")]
+	public long Id { get; set; }
 
-    [Column("key")]
-    public string Key { get; set; } = null!;
+	[Column("key")]
+	public string Key { get; set; } = null!;
 
-    [Column("score")]
-    public double Score { get; set; }
+	[Column("score")]
+	public double Score { get; set; }
 
-    [Column("value")]
-    public string Value { get; set; } = null!;
+	[Column("value")]
+	public string Value { get; set; } = null!;
 
-    [Column("expireat")]
-    public DateTime? Expireat { get; set; }
+	[Column("expireat")]
+	public DateTime? Expireat { get; set; }
 
-    [Column("updatecount")]
-    public int Updatecount { get; set; }
+	[Column("updatecount")]
+	public int Updatecount { get; set; }
 }

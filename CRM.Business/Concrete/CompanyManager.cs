@@ -9,7 +9,7 @@ namespace CRM.Business.Concrete
 	{
 		ICompanyDal _companyDal;
 
-		public CompanyManager(GenericRepo<Company> repo,ICompanyDal companyDal)
+		public CompanyManager(GenericRepo<Company> repo, ICompanyDal companyDal)
 			: base(repo)
 		{
 			_companyDal = companyDal;

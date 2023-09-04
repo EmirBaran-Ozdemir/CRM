@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Entity.Concrete;
 
@@ -12,19 +10,19 @@ namespace CRM.Entity.Concrete;
 [Index("Queue", "Fetchedat", "Jobid", Name = "jobqueue_queue_fetchat_jobid")]
 public partial class Jobqueue
 {
-    [Key]
-    [Column("id")]
-    public long Id { get; set; }
+	[Key]
+	[Column("id")]
+	public long Id { get; set; }
 
-    [Column("jobid")]
-    public long Jobid { get; set; }
+	[Column("jobid")]
+	public long Jobid { get; set; }
 
-    [Column("queue")]
-    public string Queue { get; set; } = null!;
+	[Column("queue")]
+	public string Queue { get; set; } = null!;
 
-    [Column("fetchedat")]
-    public DateTime? Fetchedat { get; set; }
+	[Column("fetchedat")]
+	public DateTime? Fetchedat { get; set; }
 
-    [Column("updatecount")]
-    public int Updatecount { get; set; }
+	[Column("updatecount")]
+	public int Updatecount { get; set; }
 }

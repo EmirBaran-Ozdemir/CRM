@@ -1,8 +1,6 @@
-﻿using Hangfire;
-using CRM.Business.Abstract; // Adjust this namespace
+﻿using CRM.API.Concrete;
 using CRM.Entity.Concrete;
-using Microsoft.Extensions.DependencyInjection; // Add this namespace
-using CRM.API.Concrete;
+using Hangfire;
 
 namespace CRM.WebUI.PackageConf
 {
@@ -24,7 +22,7 @@ namespace CRM.WebUI.PackageConf
 
 				RecurringJob.AddOrUpdate<IInvoiceGenerationService>(
 					x => x.GenerateInvoices(),
-					Cron.Minutely);
+					Cron.Monthly);
 			}
 		}
 
@@ -37,7 +35,7 @@ namespace CRM.WebUI.PackageConf
 				RecurringJob.AddOrUpdate(
 					order.Id.ToString(),
 					() => invoiceGenerationService.SetMembershipPaymentStatus(order),
-					Cron.Minutely);
+					Cron.Monthly);
 			}
 		}
 	}
