@@ -6,7 +6,12 @@ namespace CRM.Business.Concrete
 	public class GenericManager<T> : IGenericService<T> where T : class
 	{
 
-		GenericRepo<T> repo = new GenericRepo<T>();
+		private readonly GenericRepo<T> repo;
+
+		public GenericManager(GenericRepo<T> repo)
+		{
+			this.repo = repo;
+		}
 		public void Add(T t)
 		{
 			if (t.Equals(null))

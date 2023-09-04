@@ -1,5 +1,6 @@
 ﻿using CRM.Business.Abstract;
 using CRM.DataAccess.Abstract;
+using CRM.DataAccess.Repository;
 using CRM.Entity.Concrete;
 
 namespace CRM.Business.Concrete
@@ -7,7 +8,8 @@ namespace CRM.Business.Concrete
 	public class UserManager : GenericManager<User>, IUserService
 	{
 		readonly IUserDal _userDal;
-		public UserManager(IUserDal userDal)
+		public UserManager(GenericRepo<User> repo, IUserDal userDal)
+			: base(repo)
 		{
 			_userDal = userDal;
 		}

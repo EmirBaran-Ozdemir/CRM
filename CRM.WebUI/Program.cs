@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using CRM.WebUI.PackageConf;
 using Microsoft.Extensions.Configuration;
+using CRM.DataAccess.Concrete;
+using CRM.DataAccess.Repository;
 
 //. Builder Configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -56,7 +58,11 @@ builder.Services.AddMvc(config =>
 
 builder.Services.AddControllersWithViews();
 
-// Controller Services
+//. Services
+builder.Services.AddScoped<CRMContext>();
+builder.Services.AddScoped(typeof(GenericRepo<>));
+
+
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<ICompanyDal, EFCompanyRepo>();
 

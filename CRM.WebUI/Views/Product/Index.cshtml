@@ -48,19 +48,24 @@
 										<input type="hidden" name="CreateOrderModel.Product.Id" value="@product.Id" />
 										<input type="hidden" name="CreateOrderModel.Product.Price" value="@product.Price" />
 										<input type="hidden" name="CreateOrderModel.Product.ProductTypeId" value="@product.ProductTypeId" />
-										<button type="submit" class="load btn_primary mt-3 mb-3">
-											Buy
-										</button>
+										@if (ViewBag.CanBuy)
+										{
+											<button type="submit" class="load btn_primary mt-3 mb-3">
+												Buy
+											</button>
+										}
 									</form>
 								</td>
 							}
 							else
 							{
 								<td>
-									<button class="btn_primary " data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="endDate">
-										Buy
-									</button>
-
+									@if (ViewBag.CanBuy)
+									{
+										<button class="btn_primary " data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="endDate">
+											Buy
+										</button>
+									}
 									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog">
 											<div class="modal-content">
@@ -77,14 +82,16 @@
 														<input type="hidden" name="CreateOrderModel.endDate" id="EndDateFormatted" />
 
 													</div>
+
 													<div style="justify-content:center" class="modal-footer">
 														<button type="submit" class="btn_primary mt-3" style="width:80%;font-size:15px">
 															Buy
 														</button>
 
 													</div>
+													}
 												</form>
-												
+
 
 											</div>
 										</div>
@@ -99,16 +106,17 @@
 
 		</div>
 		<br />
-		@if (ViewBag.IsAuthorized)
-		{
-			<div style="display:flex;justify-content:center">
-				<a href="/Product/AddProduct" class="btn_primary">Add Product</a>
-			</div>
-		}
+
 	}
 	else
 	{
-		<h3 style="text-align:center">This company has no products available.</h3>
+		<h3 style="text-align:center">No products available.</h3>
+	}
+	@if (ViewBag.CanSell)
+	{
+		<div style="display:flex;justify-content:center">
+			<a href="/Product/AddProduct" class="btn_primary">Add Product</a>
+		</div>
 	}
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/plugins/monthSelect/index.js"></script>

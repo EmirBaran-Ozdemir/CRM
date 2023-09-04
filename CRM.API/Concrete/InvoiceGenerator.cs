@@ -1,8 +1,8 @@
 ﻿using CRM.Business.Abstract;
-using CRM.Business.Concrete;
+using CRM.DataAccess.Concrete;
 using CRM.Entity.Concrete;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
-using System.Linq;
 
 
 namespace CRM.API.Concrete
@@ -15,79 +15,78 @@ namespace CRM.API.Concrete
 
 	public class InvoiceGenerationService : IInvoiceGenerationService
 	{
-		private IUserService _userManager;
-		private IInvoiceService _invoiceManager;
+		readonly private IUserService _userManager;
+		readonly private IInvoiceService _invoiceManager;
+		readonly private IOrderService _orderManager;
 
-		public InvoiceGenerationService(IUserService userManager, IInvoiceService invoiceManager)
+		public InvoiceGenerationService(IUserService userManager, IInvoiceService invoiceManager, IOrderService orderManager)
 		{
 			_userManager = userManager;
 			_invoiceManager = invoiceManager;
+			_orderManager = orderManager;
 		}
 
 		public void GenerateInvoices()
 		{
-
 			var usersWithOrders = _userManager.GetAllUsersWithOrdersAndTypes();
 
 			foreach (User user in usersWithOrders)
 			{
-				Log.Information($"Invoice generating for {user.Name}");
-				float payment = 0;
-				foreach (Order order in user.Orders)
+				if (user.RoleId == 2)
 				{
-					payment += GetPayment(order);
-				}
 
-				Invoice invoice = new Invoice
-				{
-					UserId = user.Id,
-					ExcessAmount = user.Quota - payment,
-					InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
-					InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now)
-				};
-				invoice = _invoiceManager.AddAndGet(invoice);
+					Log.Information($"Invoice generating for {user.Name}");
+					float payment = 0;
+					foreach (Order order in user.Orders)
+					{
+						float lifetimePayment = GetPayment(order, o => o.Lifetime);
+						float membershipPayment = GetPayment(order, o => o.Membership);
+					}
 
-				foreach (Order order in user.Orders)
-				{
-					order.InvoiceId = invoice.Id;
+					Invoice invoice = new Invoice
+					{
+						UserId = user.Id,
+						ExcessAmount = user.Quota - payment,
+						InvoinceStartDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1)),
+						InvoinceEndDate = DateOnly.FromDateTime(DateTime.Now)
+					};
+					invoice = _invoiceManager.AddAndGet(invoice);
+
+					foreach (Order order in user.Orders)
+					{
+						order.InvoiceId = invoice.Id;
+					}
+					_invoiceManager.Update(invoice);
 				}
-				_invoiceManager.Update(invoice);
 			}
 		}
 
 		public void SetMembershipPaymentStatus(Order order)
 		{
-			if (order.Membership != null)
+			if (order.Membership!.EndDate == DateOnly.FromDateTime(DateTime.Now))
 			{
-				if (order.Membership!.EndDate == DateOnly.FromDateTime(DateTime.Now))
-				{
-					order.Membership!.PaymentCollected = false;
-					Log.Information("Set payment status to not paid");
-				}
-				else
-					Log.Information($"{order.Product.Name}'s membership has finished");
-
+				order.Membership!.PaymentCollected = false;
+				Log.Information("Set payment status to not paid");
 			}
+			else
+				Log.Information($"{order.Product.Name}'s membership has finished");
 		}
 
-		private float GetPayment(Order order)
+		private float GetPayment<T>(Order order, Func<Order, T?> propertyAccessor) where T : class
 		{
 			float payment = 0;
-			if (order.Lifetime != null && !order.Lifetime.PaymentCollected)
-			{
-				payment = order.CurrentPrice;
-				order.Lifetime.PaymentCollected = true;
-				Log.Information($" - - - Lifetime payment collected for order: {order}");
-			}
+			T paymentInfo = propertyAccessor(order)!;
 
-			if (order.Membership != null && !order.Membership.PaymentCollected)
+			if (paymentInfo != null && !(bool)paymentInfo.GetType().GetProperty("PaymentCollected")!.GetValue(paymentInfo)!)
 			{
 				payment = order.CurrentPrice;
-				order.Membership.PaymentCollected = true;
-				Log.Information($" - - - Membership payment collected for order: {order}");
+
+				paymentInfo.GetType().GetProperty("PaymentCollected")!.SetValue(paymentInfo, true);
+				_orderManager.Update(order);
+
+				Log.Information($" - - - {paymentInfo.GetType()} payment collected for order: {order.Product.Name}");
 			}
 			return payment;
 		}
 	}
-
 }

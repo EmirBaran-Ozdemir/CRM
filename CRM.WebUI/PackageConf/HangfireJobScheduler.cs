@@ -15,6 +15,7 @@ namespace CRM.WebUI.PackageConf
 			_serviceProvider = serviceProvider;
 		}
 
+		[Obsolete]
 		public void ScheduleJobs()
 		{
 			using (var scope = _serviceProvider.CreateScope())

@@ -18,7 +18,9 @@
 	<script src="~/js/radio-button.js"></script>
 	<script src="~/js/password-handler.js"></script>
 	<style>
-		#User_Adresss{width:100%!important}
+		#User_Adresss {
+			width: 100% !important
+		}
 	</style>
 </head>
 
@@ -65,17 +67,18 @@
 
 						<div class="row">
 							<div class="input-field col-6">
-								@Html.TextBoxFor(x=>x.User.Phone, new { @class = "form-control", @placeholder = "0XXX XXX XXXX", @required = "required" })
+								@Html.TextBoxFor(x=>x.User.Phone, new { @class = "form-control", @placeholder = "0XXX XXX XXXX", @required = "required",inputmode = "numeric" })
 								@Html.ValidationMessageFor(x => x.User.Phone, "", new { @class = "text-error" })
 								<i class="fa-solid fa-phone"></i>
 							</div>
 							<div class="input-field col-6">
-								@Html.TextBoxFor(x=>x.User.Quota, new { @class = "form-control", @placeholder = "Quota", @required = "required" })
-								@Html.ValidationMessageFor(x => x.User.Quota, "", new {  @class = "text-error" })
+								@Html.TextBoxFor(x => x.User.Quota, new { @class = "form-control", @placeholder = "Quota", @required = "required", type = "number", inputmode = "numeric" })
+								@Html.ValidationMessageFor(x => x.User.Quota, "", new { @class = "text-error" })
 								<i class="fa-solid fa-dollar"></i>
 							</div>
+
 						</div>
-						<div class="input-field" >
+						<div class="input-field">
 							@Html.TextBoxFor(x=>x.User.Address, new { @class = "form-control", @placeholder = "Address", @required = "required", @style="width:100%"})
 							@Html.ValidationMessageFor(x => x.User.Address, "", new {  @class = "text-error" })
 							<i class="fa-solid fa-home"></i>
@@ -131,16 +134,16 @@
 
 						<br />
 						<button type="submit" class="load btn_primary mt-3 mb-3" id="create">Register</button>
+
 					}
 
 					<div class="sign-in">
 						Already have an account?
 						<a href="/Auth/Login">Log in here</a>
 					</div>
-
-
 				</div>
 			</div>
 		</div>
+		<br />
 	</div>
 </section>

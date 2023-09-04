@@ -1,5 +1,6 @@
 ﻿using CRM.Business.Abstract;
 using CRM.DataAccess.Abstract;
+using CRM.DataAccess.Repository;
 using CRM.Entity.Concrete;
 using System.Linq.Expressions;
 
@@ -8,7 +9,8 @@ namespace CRM.Business.Concrete
 	public class ProductManager : GenericManager<Product>, IProductService
 	{
 		IProductDal _productDal;
-		public ProductManager(IProductDal productDal)
+		public ProductManager(GenericRepo<Product> repo, IProductDal productDal) 
+			: base(repo)
 		{
 			_productDal = productDal;
 		}

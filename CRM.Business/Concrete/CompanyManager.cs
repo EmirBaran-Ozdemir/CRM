@@ -1,5 +1,6 @@
 ﻿using CRM.Business.Abstract;
 using CRM.DataAccess.Abstract;
+using CRM.DataAccess.Repository;
 using CRM.Entity.Concrete;
 
 namespace CRM.Business.Concrete
@@ -8,7 +9,8 @@ namespace CRM.Business.Concrete
 	{
 		ICompanyDal _companyDal;
 
-		public CompanyManager(ICompanyDal companyDal)
+		public CompanyManager(GenericRepo<Company> repo,ICompanyDal companyDal)
+			: base(repo)
 		{
 			_companyDal = companyDal;
 		}

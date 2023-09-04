@@ -8,20 +8,24 @@ namespace CRM.DataAccess.EntityFramework
 {
 	public class EFCompanyRepo : GenericRepo<Company>, ICompanyDal
 	{
-		CRMContext context = new CRMContext();
+		private readonly CRMContext _context;
+		public EFCompanyRepo(CRMContext context) : base(context)
+		{
+			_context = context;
+		}
 
 		public List<User> GetUsersWithRolesByCompanyId(int id)
 		{
-			var values = context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
+			var values = _context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
 			return values;
 		}
 		public List<User> GetCompanyEmployees(int id)
 		{
-			return context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
+			return _context.Users.Include(x => x.Role).Where(x => x.CompanyId == id).ToList();
 		}
 		public bool CheckCompany(string name)
 		{
-			return context.Companies.FirstOrDefault(x => x.Name == name) != null;
+			return _context.Companies.FirstOrDefault(x => x.Name == name) != null;
 		}
 	}
 }

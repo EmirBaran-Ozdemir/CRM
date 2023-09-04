@@ -41,8 +41,8 @@ namespace CRM.WebUI.Controllers
 
 			var order = _manager.CreateOrder(model.CreateOrderModel.Product!, id);
 			_manager.Add(order);
-
-			if (model.CreateOrderModel.Product.ProductTypeId == 1)
+			order.Product = model.CreateOrderModel.Product!;
+			if (model.CreateOrderModel.Product!.ProductTypeId == 1)
 			{
 				GenerateLifetimeOrder(order);
 			}
@@ -68,7 +68,6 @@ namespace CRM.WebUI.Controllers
 				OrderId = order.Id,
 				PaymentCollected = false
 			};
-			_hangfireJobScheduler.AddJob(order);
 
 		}
 
@@ -80,6 +79,8 @@ namespace CRM.WebUI.Controllers
 				StartDate = startDate,
 				EndDate = endDate,
 			};
+			_hangfireJobScheduler.AddJob(order);
+
 		}
 	}
 }

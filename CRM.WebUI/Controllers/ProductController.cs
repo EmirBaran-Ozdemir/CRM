@@ -26,7 +26,8 @@ namespace CRM.WebUI.Controllers
 		public IActionResult Index()
 		{
 			var model = _productManager.GetAllWithCompanyAndProductType();
-			ViewBag.IsAuthorized = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("seller");
+			ViewBag.CanSell = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("seller");
+			ViewBag.CanBuy = HttpContext.User.IsInRole("admin") || HttpContext.User.IsInRole("buyer");
 			ViewBag.ProcessStatus = TempData.ContainsKey("ProcessStatus") && (bool)TempData["ProcessStatus"]!;
 			ViewBag.ProcessMessage = TempData["ProcessMessage"] as string;
 			ProductIndexModel fullModel = new ProductIndexModel();

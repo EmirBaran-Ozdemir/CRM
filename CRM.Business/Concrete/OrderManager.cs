@@ -1,5 +1,6 @@
 ﻿using CRM.Business.Abstract;
 using CRM.DataAccess.Abstract;
+using CRM.DataAccess.Repository;
 using CRM.Entity.Concrete;
 
 namespace CRM.Business.Concrete
@@ -7,7 +8,8 @@ namespace CRM.Business.Concrete
 	public class OrderManager : GenericManager<Order>, IOrderService
 	{
 		IOrderDal _orderDal;
-		public OrderManager(IOrderDal orderDal)
+		public OrderManager(GenericRepo<Order> repo, IOrderDal orderDal)
+			: base(repo)
 		{
 			_orderDal = orderDal;
 		}

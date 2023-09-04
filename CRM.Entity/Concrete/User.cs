@@ -31,7 +31,7 @@ public partial class User
     public string Password { get; set; } = null!;
 
     [Column("phone")]
-    [StringLength(15)]
+    [StringLength(11)]
     public string Phone { get; set; } = null!;
 
     [Column("address")]

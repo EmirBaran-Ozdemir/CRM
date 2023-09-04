@@ -51,47 +51,55 @@
 							Company
 						</td>
 						<td colspan="2" class="centered">
-							<a href="/Company/Products/@Model?.Company?.Id">@Model?.Company?.Name</a>
+							<a href="/Company/Products/@Model.Company?.Id">@Model.Company?.Name</a>
 						</td>
 					</tr>
-					@if (Model?.Products?.Count == 0)
+					<tr>
+						<td class="centered">
+							Role
+						</td>
+						<td colspan="2" class="centered">
+							@Model.Role.Name
+						</td>
+					</tr>
+					@if (Model.RoleId == 3)
 					{
-						<thead>
-							<tr>
-								<th class="centered" colspan="2">You didn't add any products yet</th>
-							</tr>
-						</thead>
-					}
-					else
-					{
-						<thead>
-							<tr>
-								<th class="main-element"> Product Name </th>
-								<th class="centered"> Price</th>
-								<th class="centered"> Type </th>
-							</tr>
-						</thead>
-						@foreach (var product in Model!.Products!)
+						@if (Model.Products == null)
 						{
-							<tr>
-
-								<td class="centered"><a href="/Product/Product/@product.Id">@product.Name</a></td>
-								<td class="centered">@product.Price</td>
-								<td class="centered">@product.ProductTypeId</td>
-							</tr>
+							<thead>
+								<tr>
+									<th class="centered" colspan="2">You didn't add any products yet.</th>
+								</tr>
+							</thead>
 						}
+						else
+						{
+							<thead>
+								<tr>
+									<th class="main-element"> Product Name </th>
+									<th class="centered"> Price</th>
+									<th class="centered"> Type </th>
+								</tr>
+							</thead>
+							@foreach (var product in Model!.Products!)
+							{
+								<tr>
 
+									<td class="centered"><a href="/Product/Product/@product.Id">@product.Name</a></td>
+									<td class="centered">@product.Price</td>
+									<td class="centered">@product.ProductTypeId</td>
+								</tr>
+							}
+						}
 					}
+
 				</table>
 				<br />
-				<div style="max-width:300px">
 
-					<a href="#" class="btn_primary">Edit</a>
-				</div>
 				<br />
 				<div class="align-items-center">
 
-					<a asp-controller="Auth" asp-action="Logout" class="btn_primary"><i class="fas fa-power-off me-2"></i>Logout</a>
+					<a asp-controller="Auth" asp-action="Logout" class="btn_danger"><i class="fas fa-power-off me-2"></i>Logout</a>
 				</div>
 			</div>
 		</div>
